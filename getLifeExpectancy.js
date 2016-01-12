@@ -182,3 +182,32 @@ function getLifeTable (lifeTableWeek, lifeTableMonth, lifeTableYear) {
     });
     return _lifeTableWeek.concat(_lifeTableMonth, _lifeTableYear);
 }
+
+function getLeastSquares (samples) {
+    var n = samples.length;
+    var sigmaXY = 0;
+    var sigmaX = 0;
+    var sigmaY = 0;
+    var sigmaXSquare = 0;
+    var x;
+    var y;
+    for (var i = 0; i < n; i++) {
+        x = samples[i][0];
+        y = samples[i][1];
+        sigmaXY += x * y;
+        sigmaX += x;
+        sigmaY += y;
+        sigmaXSquare += x * x;
+    }
+    var slope = (n * sigmaXY - sigmaX * sigmaY) / ((n * sigmaXSquare) - sigmaX * sigmaX);
+    var intercept = (sigmaXSquare * sigmaY - sigmaXY * sigmaX) / ((n * sigmaXSquare) - sigmaX * sigmaX);
+    var variance = 0;
+    for (var i = 0; i < n; i++) {
+        x = samples[i][0];
+        y = samples[i][1];
+        variance += Math.pow(y - (slope * x + intercept), 2)
+    }
+    variance /= n;
+    var sD = Math.sqrt(variance);
+    return [slope, intercept, sD];
+}

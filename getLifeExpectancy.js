@@ -163,11 +163,15 @@ function getApproximation (table, x) {
     var indexRight = knownX.findIndex(function (_x) {
         return (_x > x);
     });
-    var xRight = knownX[indexRight];
-    var xLeft = knownX[indexRight - 1];
-    var yRight = table[indexRight][1];
-    var yLeft = table[indexRight - 1][1];
-    return Math.round((yLeft * (xRight - x) + yRight * (x - xLeft)) / (xRight - xLeft));
+    var samples = [
+        [knownX[indexRight - 2], table[indexRight - 2][1]],
+        [knownX[indexRight - 1], table[indexRight - 1][1]],
+        [knownX[indexRight    ], table[indexRight    ][1]],
+        [knownX[indexRight + 1], table[indexRight + 1][1]]
+    ];
+    var params = getApproximateEquation(samples, 2);
+    var y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+    return y;
 }
 
 function getLifeTable (lifeTableWeek, lifeTableMonth, lifeTableYear) {

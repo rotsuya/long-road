@@ -1,7 +1,7 @@
-var DAY = 24 * 60 * 60 * 1000;  // integer
-var WEEK = DAY * 7;             // integer
-var YEAR = 365.2425 * DAY;      // integer
-var MONTH = YEAR / 12;          // integer
+const DAY = 24 * 60 * 60 * 1000;  // integer
+const WEEK = DAY * 7;             // integer
+const YEAR = 365.2425 * DAY;      // integer
+const MONTH = YEAR / 12;          // integer
 
 (function main () {
     var age = process.argv[2] - 0;
@@ -153,14 +153,14 @@ function getLifeExpectancy (currentAge) {
 }
 
 function getApproximation (table, x) {
-    var knownX = table.map(function firstItem (array) {
+    var knownX = table.map((array) => {
         return array[0];
     });
     var index = knownX.indexOf(x);
     if (index !== -1) {
         return table[index][1];
     }
-    var indexRight = knownX.findIndex(function (_x) {
+    var indexRight = knownX.findIndex((_x) => {
         return (_x > x);
     });
     var samples = [
@@ -175,13 +175,13 @@ function getApproximation (table, x) {
 }
 
 function getLifeTable (lifeTableWeek, lifeTableMonth, lifeTableYear) {
-    var _lifeTableWeek = lifeTableWeek.map(function (array) {
+    var _lifeTableWeek = lifeTableWeek.map((array) => {
         return [array[0] * WEEK, Math.round(array[1] * YEAR)];
     });
-    var _lifeTableMonth = lifeTableMonth.map(function (array) {
+    var _lifeTableMonth = lifeTableMonth.map((array) => {
         return [Math.round(array[0] * MONTH), Math.round(array[1] * YEAR)];
     });
-    var _lifeTableYear = lifeTableYear.map(function (array) {
+    var _lifeTableYear = lifeTableYear.map((array) => {
         return [Math.round(array[0] * YEAR), Math.round(array[1] * YEAR)];
     });
     return _lifeTableWeek.concat(_lifeTableMonth, _lifeTableYear);
@@ -191,7 +191,7 @@ function getApproximateEquation (samples, order) {
     switch (order) {
         case 1:
             var n = samples.length;
-            var intermediates = samples.reduce(function(prev, sample) {
+            var intermediates = samples.reduce((prev, sample) => {
                 var x = sample[0];
                 var y = sample[1]
                 return [prev[0] + x * y, prev[1] + x, prev[2] + y, prev[3] + Math.pow(x, 2)];
@@ -202,7 +202,7 @@ function getApproximateEquation (samples, order) {
             var sigmaXSquare = intermediates[3];
             var slope = (n * sigmaXY - sigmaX * sigmaY) / ((n * sigmaXSquare) - sigmaX * sigmaX);
             var intercept = (sigmaXSquare * sigmaY - sigmaXY * sigmaX) / ((n * sigmaXSquare) - sigmaX * sigmaX);
-            var variance = samples.reduce(function(prev, sample) {
+            var variance = samples.reduce((prev, sample) => {
                 x = sample[0];
                 y = sample[1];
                 return prev + Math.pow(y - (slope * x + intercept), 2) / n;
@@ -211,7 +211,7 @@ function getApproximateEquation (samples, order) {
             return [slope, intercept, sd];
         case 2:
             var n = samples.length;
-            var intermediates = samples.reduce(function(prev, sample) {
+            var intermediates = samples.reduce((prev, sample) => {
                 x = sample[0];
                 y = sample[1];
                 return [prev[0] + x, prev[1] + Math.pow(x, 2), prev[2] + Math.pow(x, 3), prev[3] + Math.pow(x, 4),
@@ -228,7 +228,7 @@ function getApproximateEquation (samples, order) {
             var a2 = ((s1 * s3 - Math.pow(s2, 2)) * z3 + (s1 * s2 - n * s3) * z2         + (n * s2 - Math.pow(s1, 2)) * z1 ) / denominator;
             var a1 = ((s2 * s3 - s1 * s4) * z3         + (n * s4 - Math.pow(s2, 2)) * z2 + (s1 * s2 - n * s3) * z1         ) / denominator;
             var a0 = ((s2 * s4 - Math.pow(s3, 2)) * z3 + (s2 * s3 - s1 * s4) * z2        + (s1 * s3 - Math.pow(s2, 2)) * z1) / denominator;
-            var variance = samples.reduce(function(prev, sample) {
+            var variance = samples.reduce((prev, sample) => {
                 x = sample[0];
                 y = sample[1];
                 return prev + Math.pow(y - (a2 * Math.pow(x, 2) + a1 * x + a0), 2) / n;

@@ -1,3 +1,5 @@
+'use strict';
+
 const DAY = 24 * 60 * 60 * 1000;  // integer
 const WEEK = DAY * 7;             // integer
 const YEAR = 365.2425 * DAY;      // integer
@@ -188,49 +190,39 @@ function getLifeTable (lifeTableWeek, lifeTableMonth, lifeTableYear) {
 }
 
 function getApproximateEquation (samples, order) {
+    var n = samples.length;
     switch (order) {
         case 1:
-            var n = samples.length;
             var intermediates = samples.reduce((prev, sample) => {
                 var x = sample[0];
-                var y = sample[1]
+                var y = sample[1];
                 return [prev[0] + x * y, prev[1] + x, prev[2] + y, prev[3] + Math.pow(x, 2)];
             }, [0, 0, 0, 0]);
-            var sigmaXY      = intermediates[0];
-            var sigmaX       = intermediates[1];
-            var sigmaY       = intermediates[2];
-            var sigmaXSquare = intermediates[3];
+            let [sigmaXY, sigmaX, sigmaY, sigmaXSquare] = intermediates;
             var slope = (n * sigmaXY - sigmaX * sigmaY) / ((n * sigmaXSquare) - sigmaX * sigmaX);
             var intercept = (sigmaXSquare * sigmaY - sigmaXY * sigmaX) / ((n * sigmaXSquare) - sigmaX * sigmaX);
             var variance = samples.reduce((prev, sample) => {
-                x = sample[0];
-                y = sample[1];
+                var x = sample[0];
+                var y = sample[1];
                 return prev + Math.pow(y - (slope * x + intercept), 2) / n;
             }, 0);
             var sd = Math.sqrt(variance);
             return [slope, intercept, sd];
         case 2:
-            var n = samples.length;
             var intermediates = samples.reduce((prev, sample) => {
-                x = sample[0];
-                y = sample[1];
+                var x = sample[0];
+                var y = sample[1];
                 return [prev[0] + x, prev[1] + Math.pow(x, 2), prev[2] + Math.pow(x, 3), prev[3] + Math.pow(x, 4),
                     prev[4] + Math.pow(x, 2) * y, prev[5] + x * y, prev[6] + y];
             }, [0, 0, 0, 0, 0, 0, 0]);
-            var s1 = intermediates[0];
-            var s2 = intermediates[1];
-            var s3 = intermediates[2];
-            var s4 = intermediates[3];
-            var z1 = intermediates[4];
-            var z2 = intermediates[5];
-            var z3 = intermediates[6];
+            let [s1, s2, s3, s4, z1, z2, z3] = intermediates;
             var denominator = (n * s2 - Math.pow(s1, 2)) * s4 + s2 * (s1 * s3 - Math.pow(s2, 2)) + s3 * (s1 * s2 - n * s3);
             var a2 = ((s1 * s3 - Math.pow(s2, 2)) * z3 + (s1 * s2 - n * s3) * z2         + (n * s2 - Math.pow(s1, 2)) * z1 ) / denominator;
             var a1 = ((s2 * s3 - s1 * s4) * z3         + (n * s4 - Math.pow(s2, 2)) * z2 + (s1 * s2 - n * s3) * z1         ) / denominator;
             var a0 = ((s2 * s4 - Math.pow(s3, 2)) * z3 + (s2 * s3 - s1 * s4) * z2        + (s1 * s3 - Math.pow(s2, 2)) * z1) / denominator;
             var variance = samples.reduce((prev, sample) => {
-                x = sample[0];
-                y = sample[1];
+                var x = sample[0];
+                var y = sample[1];
                 return prev + Math.pow(y - (a2 * Math.pow(x, 2) + a1 * x + a0), 2) / n;
             }, 0);
             var sd = Math.sqrt(variance);

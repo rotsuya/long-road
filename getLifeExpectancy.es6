@@ -1,24 +1,24 @@
+'use strict';
+
 const DAY = 24 * 60 * 60 * 1000;  // integer
 const WEEK = DAY * 7;             // integer
 const YEAR = 365.2425 * DAY;      // integer
 const MONTH = YEAR / 12;          // integer
 
 (function main () {
-    var age = process.argv[2] - 0;
+    const age = process.argv[2] - 0;
     if (Number.isNaN(age)) {
         return false;
     }
-    var dateValue = 0;
-    var yearDay = [0, 0];
-    for (var i = 0; i <= YEAR; i = i + DAY) {
-        dateValue = getLifeExpectancy(age * YEAR + i);
-        yearDay = getYearDayFromDateValue(dateValue);
+    for (let i = 0; i <= YEAR; i = i + DAY) {
+        let dateValue = getLifeExpectancy(age * YEAR + i);
+        let yearDay = getYearDayFromDateValue(dateValue);
         console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
     }
 
     function getYearDayFromDateValue (_dateValue) {
-        var year = Math.floor(_dateValue / YEAR);
-        var day = Math.floor((_dateValue % YEAR) / DAY);
+        const year = Math.floor(_dateValue / YEAR);
+        const day = Math.floor((_dateValue % YEAR) / DAY);
         return [year, day];
     }
 
@@ -29,19 +29,19 @@ const MONTH = YEAR / 12;          // integer
 
 function getLifeExpectancy (currentAge) {
     // ソートされている前提
-    var lifeTableWeek = [
+    const lifeTableWeek = [
         [0, 80.50],
         [1, 80.54],
         [2, 80.53],
         [3, 80.51],
         [4, 80.50]
     ];
-    var lifeTableMonth = [
+    const lifeTableMonth = [
         [2, 80.43],
         [3, 80.36],
         [6, 80.14]
     ];
-    var lifeTableYear = [
+    const lifeTableYear = [
         [1, 79.67],
         [2, 78.70],
         [3, 77.71],
@@ -148,93 +148,79 @@ function getLifeExpectancy (currentAge) {
         [104, 1.56],
         [105, 1.45]
     ];
-    var lifeTable = getLifeTable(lifeTableWeek, lifeTableMonth, lifeTableYear);
+    const lifeTable = getLifeTable(lifeTableWeek, lifeTableMonth, lifeTableYear);
     return getApproximation(lifeTable, currentAge)
 }
 
 function getApproximation (table, x) {
-    var knownX = table.map((array) => {
+    const knownX = table.map((array) => {
         return array[0];
     });
-    var index = knownX.indexOf(x);
+    const index = knownX.indexOf(x);
     if (index !== -1) {
         return table[index][1];
     }
-    var indexRight = knownX.findIndex((_x) => {
+    const indexRight = knownX.findIndex((_x) => {
         return (_x > x);
     });
-    var samples = [
+    const samples = [
         [knownX[indexRight - 2], table[indexRight - 2][1]],
         [knownX[indexRight - 1], table[indexRight - 1][1]],
         [knownX[indexRight    ], table[indexRight    ][1]],
         [knownX[indexRight + 1], table[indexRight + 1][1]]
     ];
-    var params = getApproximateEquation(samples, 2);
-    var y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+    const params = getApproximateEquation(samples, 2);
+    const y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
     return y;
 }
 
 function getLifeTable (lifeTableWeek, lifeTableMonth, lifeTableYear) {
-    var _lifeTableWeek = lifeTableWeek.map((array) => {
+    const _lifeTableWeek = lifeTableWeek.map((array) => {
         return [array[0] * WEEK, Math.round(array[1] * YEAR)];
     });
-    var _lifeTableMonth = lifeTableMonth.map((array) => {
+    const _lifeTableMonth = lifeTableMonth.map((array) => {
         return [Math.round(array[0] * MONTH), Math.round(array[1] * YEAR)];
     });
-    var _lifeTableYear = lifeTableYear.map((array) => {
+    const _lifeTableYear = lifeTableYear.map((array) => {
         return [Math.round(array[0] * YEAR), Math.round(array[1] * YEAR)];
     });
     return _lifeTableWeek.concat(_lifeTableMonth, _lifeTableYear);
 }
 
 function getApproximateEquation (samples, order) {
+    const n = samples.length;
     switch (order) {
         case 1:
-            var n = samples.length;
-            var intermediates = samples.reduce((prev, sample) => {
-                var x = sample[0];
-                var y = sample[1]
+            const intermediates1 = samples.reduce((prev, sample) => {
+                const [x, y] = sample;
                 return [prev[0] + x * y, prev[1] + x, prev[2] + y, prev[3] + Math.pow(x, 2)];
             }, [0, 0, 0, 0]);
-            var sigmaXY      = intermediates[0];
-            var sigmaX       = intermediates[1];
-            var sigmaY       = intermediates[2];
-            var sigmaXSquare = intermediates[3];
-            var slope = (n * sigmaXY - sigmaX * sigmaY) / ((n * sigmaXSquare) - sigmaX * sigmaX);
-            var intercept = (sigmaXSquare * sigmaY - sigmaXY * sigmaX) / ((n * sigmaXSquare) - sigmaX * sigmaX);
-            var variance = samples.reduce((prev, sample) => {
-                x = sample[0];
-                y = sample[1];
+            const [sigmaXY, sigmaX, sigmaY, sigmaXSquare] = intermediates1;
+            const slope = (n * sigmaXY - sigmaX * sigmaY) / ((n * sigmaXSquare) - sigmaX * sigmaX);
+            const intercept = (sigmaXSquare * sigmaY - sigmaXY * sigmaX) / ((n * sigmaXSquare) - sigmaX * sigmaX);
+            const variance1 = samples.reduce((prev, sample) => {
+                const [x, y] = sample;
                 return prev + Math.pow(y - (slope * x + intercept), 2) / n;
             }, 0);
-            var sd = Math.sqrt(variance);
-            return [slope, intercept, sd];
+            const sd1 = Math.sqrt(variance1);
+            return [slope, intercept, sd1];
         case 2:
-            var n = samples.length;
-            var intermediates = samples.reduce((prev, sample) => {
-                x = sample[0];
-                y = sample[1];
+            const intermediates2 = samples.reduce((prev, sample) => {
+                const [x, y] = sample;
                 return [prev[0] + x, prev[1] + Math.pow(x, 2), prev[2] + Math.pow(x, 3), prev[3] + Math.pow(x, 4),
                     prev[4] + Math.pow(x, 2) * y, prev[5] + x * y, prev[6] + y];
             }, [0, 0, 0, 0, 0, 0, 0]);
-            var s1 = intermediates[0];
-            var s2 = intermediates[1];
-            var s3 = intermediates[2];
-            var s4 = intermediates[3];
-            var z1 = intermediates[4];
-            var z2 = intermediates[5];
-            var z3 = intermediates[6];
-            var denominator = (n * s2 - Math.pow(s1, 2)) * s4 + s2 * (s1 * s3 - Math.pow(s2, 2)) + s3 * (s1 * s2 - n * s3);
-            var a2 = ((s1 * s3 - Math.pow(s2, 2)) * z3 + (s1 * s2 - n * s3) * z2         + (n * s2 - Math.pow(s1, 2)) * z1 ) / denominator;
-            var a1 = ((s2 * s3 - s1 * s4) * z3         + (n * s4 - Math.pow(s2, 2)) * z2 + (s1 * s2 - n * s3) * z1         ) / denominator;
-            var a0 = ((s2 * s4 - Math.pow(s3, 2)) * z3 + (s2 * s3 - s1 * s4) * z2        + (s1 * s3 - Math.pow(s2, 2)) * z1) / denominator;
-            var variance = samples.reduce((prev, sample) => {
-                x = sample[0];
-                y = sample[1];
+            const [s1, s2, s3, s4, z1, z2, z3] = intermediates2;
+            const denominator = (n * s2 - Math.pow(s1, 2)) * s4 + s2 * (s1 * s3 - Math.pow(s2, 2)) + s3 * (s1 * s2 - n * s3);
+            const a2 = ((s1 * s3 - Math.pow(s2, 2)) * z3 + (s1 * s2 - n * s3) * z2         + (n * s2 - Math.pow(s1, 2)) * z1 ) / denominator;
+            const a1 = ((s2 * s3 - s1 * s4) * z3         + (n * s4 - Math.pow(s2, 2)) * z2 + (s1 * s2 - n * s3) * z1         ) / denominator;
+            const a0 = ((s2 * s4 - Math.pow(s3, 2)) * z3 + (s2 * s3 - s1 * s4) * z2        + (s1 * s3 - Math.pow(s2, 2)) * z1) / denominator;
+            const variance = samples.reduce((prev, sample) => {
+                const [x, y] = sample;
                 return prev + Math.pow(y - (a2 * Math.pow(x, 2) + a1 * x + a0), 2) / n;
             }, 0);
-            var sd = Math.sqrt(variance);
-            return [a2, a1, a0, sd];
+            const sd2 = Math.sqrt(variance);
+            return [a2, a1, a0, sd2];
             break;
         defaut:
             return false;

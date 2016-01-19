@@ -149,10 +149,10 @@ function getLifeExpectancy (currentAge) {
         [105, 1.45]
     ];
     const lifeTable = getLifeTable(lifeTableWeek, lifeTableMonth, lifeTableYear);
-    return getApproximation(lifeTable, currentAge)
+    return getApproximation(lifeTable, currentAge, 2)
 }
 
-function getApproximation (table, x) {
+function getApproximation (table, x, order) {
     const knownX = table.map((array) => {
         return array[0];
     });
@@ -163,14 +163,30 @@ function getApproximation (table, x) {
     const indexRight = knownX.findIndex((_x) => {
         return (_x > x);
     });
-    const samples = [
-        [knownX[indexRight - 2], table[indexRight - 2][1]],
-        [knownX[indexRight - 1], table[indexRight - 1][1]],
-        [knownX[indexRight    ], table[indexRight    ][1]],
-        [knownX[indexRight + 1], table[indexRight + 1][1]]
-    ];
-    const params = getApproximateEquation(samples, 2);
-    const y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+    var sampleLength;
+    switch (order) {
+        case 1:
+            sampleLength = 2;
+            break;
+        case 2:
+            sampleLength = 4;
+            break;
+        default:
+            // error
+            return;
+    }
+    const indexLeast = Math.min(Math.max(0, indexRight - (sampleLength / 2)), knownX.length - sampleLength);
+    const samples = table.slice(indexLeast, indexLeast + sampleLength);
+    const params = getApproximateEquation(samples, order);
+    var y = 0;
+    switch (order) {
+        case 1:
+            y = params[0] * x + params[1];
+            break;
+        case 2:
+            y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+            break;
+    }
     return y;
 }
 

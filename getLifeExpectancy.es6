@@ -13,7 +13,7 @@ const MONTH = YEAR / 12;          // integer
     for (let i = 0; i <= YEAR; i = i + DAY) {
         let dateValue = getLifeExpectancy(age * YEAR + i);
         let yearDay = getYearDayFromDateValue(dateValue);
-        console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
+        //console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
     }
 
     function getYearDayFromDateValue (_dateValue) {
@@ -177,6 +177,8 @@ function getApproximation (table, x, order) {
     }
     const indexLeast = Math.min(Math.max(0, indexRight - (sampleLength / 2)), knownX.length - sampleLength);
     const samples = table.slice(indexLeast, indexLeast + sampleLength);
+    console.log(indexRight - (sampleLength / 2), knownX.length);
+    // indexRightが存在しないので-1
     const params = getApproximateEquation(samples, order);
     var y = 0;
     switch (order) {

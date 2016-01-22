@@ -8,12 +8,13 @@ const MONTH = YEAR / 12;          // integer
 (function main () {
     const age = process.argv[2] - 0;
     if (Number.isNaN(age)) {
+        // error
         return false;
     }
     for (let i = 0; i <= YEAR; i = i + DAY) {
         let dateValue = getLifeExpectancy(age * YEAR + i);
         let yearDay = getYearDayFromDateValue(dateValue);
-        //console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
+        console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
     }
 
     function getYearDayFromDateValue (_dateValue) {
@@ -153,16 +154,26 @@ function getLifeExpectancy (currentAge) {
 }
 
 function getApproximation (table, x, order) {
-    const knownX = table.map((array) => {
+    const tableX = table.map((array) => {
         return array[0];
     });
-    const index = knownX.indexOf(x);
+    const tableLength = table.length;
+    const index = tableX.indexOf(x);
+    const minX = tableX[0];
+    const maxX = tableX[tableLength - 1];
+    if (x < minX || x > maxX) {
+        // error
+        return false;
+    }
     if (index !== -1) {
         return table[index][1];
     }
-    const indexRight = knownX.findIndex((_x) => {
+    let indexRight = (table.findIndex((_x) => {
         return (_x > x);
-    });
+    }));
+    if (indexRight === -1) {
+        indexRight = tableLength - 1;
+    }
     var sampleLength;
     switch (order) {
         case 1:
@@ -175,9 +186,8 @@ function getApproximation (table, x, order) {
             // error
             return;
     }
-    const indexLeast = Math.min(Math.max(0, indexRight - (sampleLength / 2)), knownX.length - sampleLength);
+    const indexLeast = Math.min(Math.max(0, indexRight - (sampleLength / 2)), tableLength - sampleLength);
     const samples = table.slice(indexLeast, indexLeast + sampleLength);
-    console.log(indexRight - (sampleLength / 2), knownX.length);
     // indexRightが存在しないので-1
     const params = getApproximateEquation(samples, order);
     var y = 0;

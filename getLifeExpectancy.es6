@@ -8,6 +8,7 @@ const MONTH = YEAR / 12;          // integer
 (function main () {
     const age = process.argv[2] - 0;
     if (Number.isNaN(age)) {
+        // error
         return false;
     }
     for (let i = 0; i <= YEAR; i = i + DAY) {
@@ -149,28 +150,55 @@ function getLifeExpectancy (currentAge) {
         [105, 1.45]
     ];
     const lifeTable = getLifeTable(lifeTableWeek, lifeTableMonth, lifeTableYear);
-    return getApproximation(lifeTable, currentAge)
+    return getApproximation(lifeTable, currentAge, 2)
 }
 
-function getApproximation (table, x) {
-    const knownX = table.map((array) => {
+function getApproximation (table, x, order) {
+    const tableX = table.map((array) => {
         return array[0];
     });
-    const index = knownX.indexOf(x);
+    const tableLength = table.length;
+    const index = tableX.indexOf(x);
+    const minX = tableX[0];
+    const maxX = tableX[tableLength - 1];
+    if (x < minX || x > maxX) {
+        // error
+        return false;
+    }
     if (index !== -1) {
         return table[index][1];
     }
-    const indexRight = knownX.findIndex((_x) => {
+    let indexRight = (table.findIndex((_x) => {
         return (_x > x);
-    });
-    const samples = [
-        [knownX[indexRight - 2], table[indexRight - 2][1]],
-        [knownX[indexRight - 1], table[indexRight - 1][1]],
-        [knownX[indexRight    ], table[indexRight    ][1]],
-        [knownX[indexRight + 1], table[indexRight + 1][1]]
-    ];
-    const params = getApproximateEquation(samples, 2);
-    const y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+    }));
+    if (indexRight === -1) {
+        indexRight = tableLength - 1;
+    }
+    var sampleLength;
+    switch (order) {
+        case 1:
+            sampleLength = 2;
+            break;
+        case 2:
+            sampleLength = 4;
+            break;
+        default:
+            // error
+            return;
+    }
+    const indexLeast = Math.min(Math.max(0, indexRight - (sampleLength / 2)), tableLength - sampleLength);
+    const samples = table.slice(indexLeast, indexLeast + sampleLength);
+    // indexRightが存在しないので-1
+    const params = getApproximateEquation(samples, order);
+    var y = 0;
+    switch (order) {
+        case 1:
+            y = params[0] * x + params[1];
+            break;
+        case 2:
+            y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+            break;
+    }
     return y;
 }
 

@@ -28,7 +28,7 @@ const MONTH = YEAR / 12;          // integer
     }
 })();
 
-function getLifeExpectancy (currentAge) {
+function getLifeExpectancy (dateValue) {
     // ソートされている前提
     const lifeTableWeek = [
         [0, 80.50],
@@ -150,7 +150,7 @@ function getLifeExpectancy (currentAge) {
         [105, 1.45]
     ];
     const lifeTable = getLifeTable(lifeTableWeek, lifeTableMonth, lifeTableYear);
-    return getApproximation(lifeTable, currentAge, 2)
+    return getApproximation(lifeTable, dateValue, 2)
 }
 
 function getApproximation (table, x, order) {

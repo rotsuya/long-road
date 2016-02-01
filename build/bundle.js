@@ -19102,7 +19102,7 @@ ReactDOM.render(React.createElement(
     "h1",
     null,
     "Hello, world!"
-), document.getElementById('example'));
+), document.getElementById('content'));
 
 },{"react":158,"react-dom":29}]},{},[159])
 //# sourceMappingURL=bundle.js.map

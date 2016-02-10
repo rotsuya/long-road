@@ -19098,11 +19098,14 @@ module.exports = require('./lib/React');
 
 var React = require("react");
 var ReactDOM = require("react-dom");
-ReactDOM.render(React.createElement(
-    "h1",
-    null,
-    "Hello, world!"
-), document.getElementById('content'));
+var Slider = React.createClass({
+    displayName: "Slider",
+
+    render: function render() {
+        return React.createElement("input", { type: "range", min: "0", max: "105" });
+    }
+});
+ReactDOM.render(React.createElement(Slider, null), document.getElementById('content'));
 
 },{"react":158,"react-dom":29}]},{},[159])
 //# sourceMappingURL=bundle.js.map

@@ -1,6 +1,13 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var Slider = React.createClass({
+    render: () => {
+        return (
+            <input type="range" min="0" max="105" />
+        );
+    }
+});
 ReactDOM.render(
-<h1>Hello, world!</h1>,
+    <Slider />,
     document.getElementById('content')
-);
+)

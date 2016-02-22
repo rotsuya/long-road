@@ -19098,14 +19098,233 @@ module.exports = require('./lib/React');
 
 var React = require("react");
 var ReactDOM = require("react-dom");
+var Birthday = React.createClass({
+    displayName: "Birthday",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "h1",
+                null,
+                "誕生日"
+            ),
+            React.createElement(BirthdayForm, null)
+        );
+    }
+});
+var BirthdayForm = React.createClass({
+    displayName: "BirthdayForm",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement("input", { type: "number", min: "1911", max: "2016", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "年"
+            ),
+            React.createElement("input", { type: "number", min: "1", max: "12", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "月"
+            ),
+            React.createElement("input", { type: "number", min: "1", max: "31", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "日"
+            )
+        );
+    }
+});
+var Query = React.createClass({
+    displayName: "Query",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "h1",
+                null,
+                "調べる日"
+            ),
+            React.createElement(
+                "button",
+                null,
+                "今日"
+            ),
+            React.createElement(QueryDate, null),
+            React.createElement(QueryAge, null),
+            React.createElement(Slider, null)
+        );
+    }
+});
+var QueryDate = React.createClass({
+    displayName: "QueryDate",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement("input", { type: "number", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "年"
+            ),
+            React.createElement("input", { type: "number", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "月"
+            ),
+            React.createElement("input", { type: "number", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "日"
+            )
+        );
+    }
+});
+var QueryAge = React.createClass({
+    displayName: "QueryAge",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement("input", { type: "number", min: "0", max: "105", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "歳"
+            ),
+            React.createElement("input", { type: "number", min: "0", step: "1" }),
+            React.createElement(
+                "label",
+                null,
+                "日"
+            )
+        );
+    }
+});
 var Slider = React.createClass({
     displayName: "Slider",
 
     render: function render() {
-        return React.createElement("input", { type: "range", min: "0", max: "105" });
+        return React.createElement(
+            "div",
+            null,
+            React.createElement("input", { type: "range", min: "0", max: "105" })
+        );
     }
 });
-ReactDOM.render(React.createElement(Slider, null), document.getElementById('content'));
+var Result = React.createClass({
+    displayName: "Result",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(
+                "h1",
+                null,
+                "結果"
+            ),
+            React.createElement(ResultDate, null),
+            React.createElement(ResultPeriod, null),
+            React.createElement(ResultPercentage, null)
+        );
+    }
+});
+var ResultDate = React.createClass({
+    displayName: "ResultDate",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement(
+                "label",
+                null,
+                "年"
+            ),
+            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement(
+                "label",
+                null,
+                "月"
+            ),
+            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement(
+                "label",
+                null,
+                "日"
+            )
+        );
+    }
+});
+var ResultPeriod = React.createClass({
+    displayName: "ResultPeriod",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            "残り",
+            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement(
+                "label",
+                null,
+                "年"
+            ),
+            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement(
+                "label",
+                null,
+                "日"
+            )
+        );
+    }
+});
+var ResultPercentage = React.createClass({
+    displayName: "ResultPercentage",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement(
+                "label",
+                null,
+                "%"
+            )
+        );
+    }
+});
+var LifeExpectancyBox = React.createClass({
+    displayName: "LifeExpectancyBox",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(Birthday, null),
+            React.createElement(Query, null),
+            React.createElement(Result, null)
+        );
+    }
+});
+ReactDOM.render(React.createElement(LifeExpectancyBox, null), document.getElementById('content'));
 
 },{"react":158,"react-dom":29}]},{},[159])
 //# sourceMappingURL=bundle.js.map

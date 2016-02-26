@@ -19110,7 +19110,7 @@ var Birthday = React.createClass({
                 null,
                 "誕生日"
             ),
-            React.createElement(BirthdayForm, null)
+            React.createElement(BirthdayForm, { year: "1970", month: "1", day: "1" })
         );
     }
 });
@@ -19121,19 +19121,19 @@ var BirthdayForm = React.createClass({
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", min: "1911", max: "2016", step: "1" }),
+            React.createElement("input", { type: "number", min: "1911", max: "2016", step: "1", value: this.props.year }),
             React.createElement(
                 "label",
                 null,
                 "年"
             ),
-            React.createElement("input", { type: "number", min: "1", max: "12", step: "1" }),
+            React.createElement("input", { type: "number", min: "1", max: "12", step: "1", value: this.props.month }),
             React.createElement(
                 "label",
                 null,
                 "月"
             ),
-            React.createElement("input", { type: "number", min: "1", max: "31", step: "1" }),
+            React.createElement("input", { type: "number", min: "1", max: "31", step: "1", value: this.props.day }),
             React.createElement(
                 "label",
                 null,
@@ -19154,14 +19154,8 @@ var Query = React.createClass({
                 null,
                 "調べる日"
             ),
-            React.createElement(
-                "button",
-                null,
-                "今日"
-            ),
             React.createElement(QueryDate, null),
-            React.createElement(QueryAge, null),
-            React.createElement(Slider, null)
+            React.createElement(QueryAge, null)
         );
     }
 });
@@ -19212,17 +19206,6 @@ var QueryAge = React.createClass({
                 null,
                 "日"
             )
-        );
-    }
-});
-var Slider = React.createClass({
-    displayName: "Slider",
-
-    render: function render() {
-        return React.createElement(
-            "div",
-            null,
-            React.createElement("input", { type: "range", min: "0", max: "105" })
         );
     }
 });

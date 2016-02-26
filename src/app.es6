@@ -1,44 +1,42 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Birthday = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
-            <h1>誕生日</h1>
-            <BirthdayForm />
+                <h1>誕生日</h1>
+                <BirthdayForm year="1970" month="1" day="1" />
             </div>
         );
     }
 });
 var BirthdayForm = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
-                <input type="number" min="1911" max="2016" step="1" />
+                <input type="number" min="1911" max="2016" step="1" value={this.props.year} />
                 <label>年</label>
-                <input type="number" min="1" max="12" step="1" />
+                <input type="number" min="1" max="12" step="1" value={this.props.month} />
                 <label>月</label>
-                <input type="number" min="1" max="31" step="1" />
+                <input type="number" min="1" max="31" step="1" value={this.props.day} />
                 <label>日</label>
             </div>
         );
     }
 });
 var Query = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <h1>調べる日</h1>
-                <button>今日</button>
                 <QueryDate />
                 <QueryAge />
-                <Slider />
             </div>
         );
     }
 });
 var QueryDate = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <input type="number" step="1" />
@@ -52,7 +50,7 @@ var QueryDate = React.createClass({
     }
 });
 var QueryAge = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <input type="number" min="0" max="105" step="1" />
@@ -63,17 +61,8 @@ var QueryAge = React.createClass({
         );
     }
 });
-var Slider = React.createClass({
-    render: () => {
-        return (
-            <div>
-                <input type="range" min="0" max="105" />
-            </div>
-        );
-    }
-});
 var Result = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <h1>結果</h1>
@@ -85,7 +74,7 @@ var Result = React.createClass({
     }
 });
 var ResultDate = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <input type="text" readonly />
@@ -99,7 +88,7 @@ var ResultDate = React.createClass({
     }
 });
 var ResultPeriod = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 残り
@@ -112,7 +101,7 @@ var ResultPeriod = React.createClass({
     }
 });
 var ResultPercentage = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <input type="text" readonly />
@@ -122,7 +111,7 @@ var ResultPercentage = React.createClass({
     }
 });
 var LifeExpectancyBox = React.createClass({
-    render: () => {
+    render: function () {
         return (
             <div>
                 <Birthday />
@@ -133,6 +122,6 @@ var LifeExpectancyBox = React.createClass({
     }
 });
 ReactDOM.render(
-<LifeExpectancyBox />,
+    <LifeExpectancyBox />,
     document.getElementById('content')
-)
+);

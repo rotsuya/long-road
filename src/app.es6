@@ -1,24 +1,32 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Birthday = React.createClass({
+    getInitialState: function() {
+        return new Date(1970, 0, 1);
+    },
     render: function () {
+        console.log(this.state);
         return (
             <div>
                 <h1>誕生日</h1>
-                <BirthdayForm year="1970" month="1" day="1" />
+                <BirthdayForm birthdayDate={this.state} />
             </div>
         );
+    },
+    setState: function() {
+        this.setState(new Date());
     }
 });
 var BirthdayForm = React.createClass({
     render: function () {
+        var birthdayDate = this.props.birthdayDate;
         return (
             <div>
-                <input type="number" min="1911" max="2016" step="1" value={this.props.year} />
+                <input type="number" min="1911" max="2016" step="1" value={birthdayDate.getFullYear()} />
                 <label>年</label>
-                <input type="number" min="1" max="12" step="1" value={this.props.month} />
+                <input type="number" min="1" max="12" step="1" value={birthdayDate.getMonth() + 1} />
                 <label>月</label>
-                <input type="number" min="1" max="31" step="1" value={this.props.day} />
+                <input type="number" min="1" max="31" step="1" value={birthdayDate.getDate()} />
                 <label>日</label>
             </div>
         );

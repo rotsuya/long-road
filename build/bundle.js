@@ -19101,7 +19101,11 @@ var ReactDOM = require("react-dom");
 var Birthday = React.createClass({
     displayName: "Birthday",
 
+    getInitialState: function getInitialState() {
+        return new Date(1970, 0, 1);
+    },
     render: function render() {
+        console.log(this.state);
         return React.createElement(
             "div",
             null,
@@ -19110,30 +19114,34 @@ var Birthday = React.createClass({
                 null,
                 "誕生日"
             ),
-            React.createElement(BirthdayForm, { year: "1970", month: "1", day: "1" })
+            React.createElement(BirthdayForm, { birthdayDate: this.state })
         );
+    },
+    setState: function setState() {
+        this.setState(new Date());
     }
 });
 var BirthdayForm = React.createClass({
     displayName: "BirthdayForm",
 
     render: function render() {
+        var birthdayDate = this.props.birthdayDate;
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", min: "1911", max: "2016", step: "1", value: this.props.year }),
+            React.createElement("input", { type: "number", min: "1911", max: "2016", step: "1", value: birthdayDate.getFullYear() }),
             React.createElement(
                 "label",
                 null,
                 "年"
             ),
-            React.createElement("input", { type: "number", min: "1", max: "12", step: "1", value: this.props.month }),
+            React.createElement("input", { type: "number", min: "1", max: "12", step: "1", value: birthdayDate.getMonth() + 1 }),
             React.createElement(
                 "label",
                 null,
                 "月"
             ),
-            React.createElement("input", { type: "number", min: "1", max: "31", step: "1", value: this.props.day }),
+            React.createElement("input", { type: "number", min: "1", max: "31", step: "1", value: birthdayDate.getDate() }),
             React.createElement(
                 "label",
                 null,

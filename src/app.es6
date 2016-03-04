@@ -1,9 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Birthday = React.createClass({
-    getInitialState: function() {
-        return new Date(1970, 0, 1);
-    },
     render: function () {
         console.log(this.state);
         return (
@@ -12,9 +9,6 @@ var Birthday = React.createClass({
                 <BirthdayForm birthdayDate={this.state} />
             </div>
         );
-    },
-    setState: function() {
-        this.setState(new Date());
     }
 });
 var BirthdayForm = React.createClass({
@@ -119,10 +113,17 @@ var ResultPercentage = React.createClass({
     }
 });
 var LifeExpectancyBox = React.createClass({
+    getInitialState: function() {
+        return {
+            birthdayDate: new Date(1970, 0, 1),
+            queryDate: Date.now(),
+            resultDate: undefined
+        };
+    },
     render: function () {
         return (
             <div>
-                <Birthday />
+                <Birthday birthdayDate={this.state.birthdayDate} />
                 <Query />
                 <Result />
             </div>

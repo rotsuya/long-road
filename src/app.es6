@@ -13,38 +13,47 @@ var App = React.createClass({
             resultDate: new Date(1970, 0, 1)
         };
     },
+    update: function(newState) {
+        this.setState({
+            birthdayDate: newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate,
+            queryDate: this.state.queryDate,
+            resultDate: this.state.resultDate
+        });
+    },
     render: function () {
         return (
             <div>
-                <Birthday birthdayDate={this.state.birthdayDate} />
-                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} />
+                <Birthday birthdayDate={this.state.birthdayDate} update={this.update} />
+                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} onChange={this.update} />
                 <Result resultDate={this.state.resultDate} />
             </div>
         );
     }
 });
 var Birthday = React.createClass({
+    _onChange: function() {
+        const year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
+        const month = ReactDOM.findDOMNode(this.refs.month).value.trim() - 0;
+        const date = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        this.props.update({
+            birthdayDate: new Date(year, month - 1, date)
+        });
+    },
     render: function () {
         console.log(this.state);
+        const birthdayDate = this.props.birthdayDate;
+        const _onChange = this.props.onChange;
         return (
             <div>
                 <h1>誕生日</h1>
-                <BirthdayForm birthdayDate={this.props.birthdayDate} />
-            </div>
-        );
-    }
-});
-var BirthdayForm = React.createClass({
-    render: function () {
-        const birthdayDate = this.props.birthdayDate;
-        return (
-            <div>
-                <input type="number" step="1" value={birthdayDate.getFullYear()} />
-                <label>年</label>
-                <input type="number" step="1" value={birthdayDate.getMonth() + 1} />
-                <label>月</label>
-                <input type="number" step="1" value={birthdayDate.getDate()} />
-                <label>日</label>
+                <div>
+                    <input type="number" step="1" value={birthdayDate.getFullYear()} onChange={this._onChange} ref="year" />
+                    <label>年</label>
+                    <input type="number" step="1" value={birthdayDate.getMonth() + 1} onChange={this._onChange} ref="month" />
+                    <label>月</label>
+                    <input type="number" step="1" value={birthdayDate.getDate()} onChange={this._onChange} ref="date" />
+                    <label>日</label>
+                </div>
             </div>
         );
     }

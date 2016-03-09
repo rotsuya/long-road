@@ -19113,12 +19113,19 @@ var App = React.createClass({
             resultDate: new Date(1970, 0, 1)
         };
     },
+    update: function update(newState) {
+        this.setState({
+            birthdayDate: newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate,
+            queryDate: this.state.queryDate,
+            resultDate: this.state.resultDate
+        });
+    },
     render: function render() {
         return React.createElement(
             "div",
             null,
-            React.createElement(Birthday, { birthdayDate: this.state.birthdayDate }),
-            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate }),
+            React.createElement(Birthday, { birthdayDate: this.state.birthdayDate, update: this.update }),
+            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, onChange: this.update }),
             React.createElement(Result, { resultDate: this.state.resultDate })
         );
     }
@@ -19126,8 +19133,18 @@ var App = React.createClass({
 var Birthday = React.createClass({
     displayName: "Birthday",
 
+    _onChange: function _onChange() {
+        var year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
+        var month = ReactDOM.findDOMNode(this.refs.month).value.trim() - 0;
+        var date = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        this.props.update({
+            birthdayDate: new Date(year, month - 1, date)
+        });
+    },
     render: function render() {
         console.log(this.state);
+        var birthdayDate = this.props.birthdayDate;
+        var _onChange = this.props.onChange;
         return React.createElement(
             "div",
             null,
@@ -19136,35 +19153,27 @@ var Birthday = React.createClass({
                 null,
                 "誕生日"
             ),
-            React.createElement(BirthdayForm, { birthdayDate: this.props.birthdayDate })
-        );
-    }
-});
-var BirthdayForm = React.createClass({
-    displayName: "BirthdayForm",
-
-    render: function render() {
-        var birthdayDate = this.props.birthdayDate;
-        return React.createElement(
-            "div",
-            null,
-            React.createElement("input", { type: "number", step: "1", value: birthdayDate.getFullYear() }),
             React.createElement(
-                "label",
+                "div",
                 null,
-                "年"
-            ),
-            React.createElement("input", { type: "number", step: "1", value: birthdayDate.getMonth() + 1 }),
-            React.createElement(
-                "label",
-                null,
-                "月"
-            ),
-            React.createElement("input", { type: "number", step: "1", value: birthdayDate.getDate() }),
-            React.createElement(
-                "label",
-                null,
-                "日"
+                React.createElement("input", { type: "number", step: "1", value: birthdayDate.getFullYear(), onChange: this._onChange, ref: "year" }),
+                React.createElement(
+                    "label",
+                    null,
+                    "年"
+                ),
+                React.createElement("input", { type: "number", step: "1", value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: "month" }),
+                React.createElement(
+                    "label",
+                    null,
+                    "月"
+                ),
+                React.createElement("input", { type: "number", step: "1", value: birthdayDate.getDate(), onChange: this._onChange, ref: "date" }),
+                React.createElement(
+                    "label",
+                    null,
+                    "日"
+                )
             )
         );
     }

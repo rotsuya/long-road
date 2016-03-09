@@ -122,7 +122,7 @@ var ResultPercentage = React.createClass({
         );
     }
 });
-var LifeExpectancyBox = React.createClass({
+var App = React.createClass({
     getInitialState: function() {
         var today = new Date();
         today.setHours(0);
@@ -146,6 +146,6 @@ var LifeExpectancyBox = React.createClass({
     }
 });
 ReactDOM.render(
-    <LifeExpectancyBox />,
+    <App />,
     document.getElementById('content')
 );

@@ -19311,8 +19311,8 @@ var ResultPercentage = React.createClass({
         );
     }
 });
-var LifeExpectancyBox = React.createClass({
-    displayName: "LifeExpectancyBox",
+var App = React.createClass({
+    displayName: "App",
 
     getInitialState: function getInitialState() {
         var today = new Date();
@@ -19336,7 +19336,7 @@ var LifeExpectancyBox = React.createClass({
         );
     }
 });
-ReactDOM.render(React.createElement(LifeExpectancyBox, null), document.getElementById('content'));
+ReactDOM.render(React.createElement(App, null), document.getElementById('content'));
 
 },{"react":158,"react-dom":29}]},{},[159])
 //# sourceMappingURL=bundle.js.map

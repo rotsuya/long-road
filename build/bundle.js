@@ -19101,9 +19101,6 @@ var ReactDOM = require("react-dom");
 var Birthday = React.createClass({
     displayName: "Birthday",
 
-    getInitialState: function getInitialState() {
-        return new Date(1970, 0, 1);
-    },
     render: function render() {
         console.log(this.state);
         return React.createElement(
@@ -19114,11 +19111,8 @@ var Birthday = React.createClass({
                 null,
                 "誕生日"
             ),
-            React.createElement(BirthdayForm, { birthdayDate: this.state })
+            React.createElement(BirthdayForm, { birthdayDate: this.props.birthdayDate })
         );
-    },
-    setState: function setState() {
-        this.setState(new Date());
     }
 });
 var BirthdayForm = React.createClass({
@@ -19129,19 +19123,19 @@ var BirthdayForm = React.createClass({
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", min: "1911", max: "2016", step: "1", value: birthdayDate.getFullYear() }),
+            React.createElement("input", { type: "number", step: "1", value: birthdayDate.getFullYear() }),
             React.createElement(
                 "label",
                 null,
                 "年"
             ),
-            React.createElement("input", { type: "number", min: "1", max: "12", step: "1", value: birthdayDate.getMonth() + 1 }),
+            React.createElement("input", { type: "number", step: "1", value: birthdayDate.getMonth() + 1 }),
             React.createElement(
                 "label",
                 null,
                 "月"
             ),
-            React.createElement("input", { type: "number", min: "1", max: "31", step: "1", value: birthdayDate.getDate() }),
+            React.createElement("input", { type: "number", step: "1", value: birthdayDate.getDate() }),
             React.createElement(
                 "label",
                 null,
@@ -19162,8 +19156,8 @@ var Query = React.createClass({
                 null,
                 "調べる日"
             ),
-            React.createElement(QueryDate, null),
-            React.createElement(QueryAge, null)
+            React.createElement(QueryDate, { queryDate: this.props.queryDate }),
+            React.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate })
         );
     }
 });
@@ -19171,22 +19165,23 @@ var QueryDate = React.createClass({
     displayName: "QueryDate",
 
     render: function render() {
+        var queryDate = this.props.queryDate;
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", step: "1" }),
+            React.createElement("input", { type: "number", step: "1", value: queryDate.getFullYear() }),
             React.createElement(
                 "label",
                 null,
                 "年"
             ),
-            React.createElement("input", { type: "number", step: "1" }),
+            React.createElement("input", { type: "number", step: "1", value: queryDate.getMonth() + 1 }),
             React.createElement(
                 "label",
                 null,
                 "月"
             ),
-            React.createElement("input", { type: "number", step: "1" }),
+            React.createElement("input", { type: "number", step: "1", value: queryDate.getDate() }),
             React.createElement(
                 "label",
                 null,
@@ -19199,16 +19194,30 @@ var QueryAge = React.createClass({
     displayName: "QueryAge",
 
     render: function render() {
+        var queryDate = this.props.queryDate;
+        var birthdayDate = this.props.birthdayDate;
+        var queryY = queryDate.getFullYear();
+        var queryM = queryDate.getMonth() + 1;
+        var queryD = queryDate.getDate();
+        var birthdayY = birthdayDate.getFullYear();
+        var birthdayM = birthdayDate.getMonth() + 1;
+        var birthdayD = birthdayDate.getDate();
+
+        var queryYearBirthdayDate = new Date(queryY, birthdayM - 1, birthdayD);
+        var lastYearBirthdayDate = new Date(queryY - 1, birthdayM - 1, birthdayD);
+        var isAfterBirthday = queryDate > queryYearBirthdayDate;
+        var ageY = queryY - birthdayY - (isAfterBirthday ? 0 : 1);
+        var ageD = (isAfterBirthday ? queryDate - queryYearBirthdayDate : queryDate - lastYearBirthdayDate) / (24 * 60 * 60 * 1000);
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", min: "0", max: "105", step: "1" }),
+            React.createElement("input", { type: "number", step: "1", value: ageY }),
             React.createElement(
                 "label",
                 null,
                 "歳"
             ),
-            React.createElement("input", { type: "number", min: "0", step: "1" }),
+            React.createElement("input", { type: "number", step: "1", value: ageD }),
             React.createElement(
                 "label",
                 null,
@@ -19305,13 +19314,25 @@ var ResultPercentage = React.createClass({
 var LifeExpectancyBox = React.createClass({
     displayName: "LifeExpectancyBox",
 
+    getInitialState: function getInitialState() {
+        var today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+        return {
+            birthdayDate: new Date(1970, 2, 8),
+            queryDate: today,
+            resultDate: new Date(1970, 0, 1)
+        };
+    },
     render: function render() {
         return React.createElement(
             "div",
             null,
-            React.createElement(Birthday, null),
-            React.createElement(Query, null),
-            React.createElement(Result, null)
+            React.createElement(Birthday, { birthdayDate: this.state.birthdayDate }),
+            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate }),
+            React.createElement(Result, { resultDate: this.state.resultDate })
         );
     }
 });

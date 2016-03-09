@@ -1,5 +1,28 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
+var App = React.createClass({
+    getInitialState: function() {
+        var today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+        return {
+            birthdayDate: new Date(1970, 2, 8),
+            queryDate: today,
+            resultDate: new Date(1970, 0, 1)
+        };
+    },
+    render: function () {
+        return (
+            <div>
+                <Birthday birthdayDate={this.state.birthdayDate} />
+                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} />
+                <Result resultDate={this.state.resultDate} />
+            </div>
+        );
+    }
+});
 var Birthday = React.createClass({
     render: function () {
         console.log(this.state);
@@ -118,29 +141,6 @@ var ResultPercentage = React.createClass({
             <div>
                 <input type="text" readonly />
                 <label>%</label>
-            </div>
-        );
-    }
-});
-var App = React.createClass({
-    getInitialState: function() {
-        var today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
-        return {
-            birthdayDate: new Date(1970, 2, 8),
-            queryDate: today,
-            resultDate: new Date(1970, 0, 1)
-        };
-    },
-    render: function () {
-        return (
-            <div>
-                <Birthday birthdayDate={this.state.birthdayDate} />
-                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} />
-                <Result resultDate={this.state.resultDate} />
             </div>
         );
     }

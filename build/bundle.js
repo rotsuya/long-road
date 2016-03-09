@@ -19098,6 +19098,31 @@ module.exports = require('./lib/React');
 
 var React = require("react");
 var ReactDOM = require("react-dom");
+var App = React.createClass({
+    displayName: "App",
+
+    getInitialState: function getInitialState() {
+        var today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        today.setMilliseconds(0);
+        return {
+            birthdayDate: new Date(1970, 2, 8),
+            queryDate: today,
+            resultDate: new Date(1970, 0, 1)
+        };
+    },
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(Birthday, { birthdayDate: this.state.birthdayDate }),
+            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate }),
+            React.createElement(Result, { resultDate: this.state.resultDate })
+        );
+    }
+});
 var Birthday = React.createClass({
     displayName: "Birthday",
 
@@ -19308,31 +19333,6 @@ var ResultPercentage = React.createClass({
                 null,
                 "%"
             )
-        );
-    }
-});
-var App = React.createClass({
-    displayName: "App",
-
-    getInitialState: function getInitialState() {
-        var today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
-        return {
-            birthdayDate: new Date(1970, 2, 8),
-            queryDate: today,
-            resultDate: new Date(1970, 0, 1)
-        };
-    },
-    render: function render() {
-        return React.createElement(
-            "div",
-            null,
-            React.createElement(Birthday, { birthdayDate: this.state.birthdayDate }),
-            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate }),
-            React.createElement(Result, { resultDate: this.state.resultDate })
         );
     }
 });

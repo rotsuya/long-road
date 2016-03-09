@@ -12,14 +12,14 @@ const MONTH = YEAR / 12;          // integer
         return false;
     }
     for (let i = 0; i <= YEAR; i = i + DAY) {
-        let dateValue = getLifeExpectancy(age * YEAR + i);
-        let yearDay = getYearDayFromValue(dateValue);
+        let ageValue = getLifeExpectancy(age * YEAR + i);
+        let yearDay = getYearDayFromValue(ageValue);
         console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
     }
 
-    function getYearDayFromValue (_dateValue) {
-        const year = Math.floor(_dateValue / YEAR);
-        const day = Math.floor((_dateValue % YEAR) / DAY);
+    function getYearDayFromValue (value) {
+        const year = Math.floor(value / YEAR);
+        const day = Math.floor((value % YEAR) / DAY);
         return [year, day];
     }
 
@@ -28,7 +28,7 @@ const MONTH = YEAR / 12;          // integer
     }
 })();
 
-function getLifeExpectancy (dateValue) {
+function getLifeExpectancy (ageValue) {
     // ソートされている前提
     const lifeTableWeek = [
         [0, 80.50],
@@ -150,7 +150,7 @@ function getLifeExpectancy (dateValue) {
         [105, 1.45]
     ];
     const lifeTable = getLifeTable(lifeTableWeek, lifeTableMonth, lifeTableYear);
-    return getApproximation(lifeTable, dateValue, 2)
+    return getApproximation(lifeTable, ageValue, 2)
 }
 
 function getApproximation (table, x, order) {

@@ -13,11 +13,11 @@ const MONTH = YEAR / 12;          // integer
     }
     for (let i = 0; i <= YEAR; i = i + DAY) {
         let dateValue = getLifeExpectancy(age * YEAR + i);
-        let yearDay = getYearDayFromDateValue(dateValue);
+        let yearDay = getYearDayFromValue(dateValue);
         console.log(getStringFromYearDay(age, i / DAY) + ', ' + getStringFromYearDay(yearDay[0], yearDay[1]));
     }
 
-    function getYearDayFromDateValue (_dateValue) {
+    function getYearDayFromValue (_dateValue) {
         const year = Math.floor(_dateValue / YEAR);
         const day = Math.floor((_dateValue % YEAR) / DAY);
         return [year, day];

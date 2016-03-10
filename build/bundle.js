@@ -19247,7 +19247,7 @@ var QueryAge = React.createClass({
 
         var queryYearBirthdayDate = new Date(queryY, birthdayM - 1, birthdayD);
         var lastYearBirthdayDate = new Date(queryY - 1, birthdayM - 1, birthdayD);
-        var isAfterBirthday = queryDate > queryYearBirthdayDate;
+        var isAfterBirthday = queryDate >= queryYearBirthdayDate;
         var ageY = queryY - birthdayY - (isAfterBirthday ? 0 : 1);
         var ageD = (isAfterBirthday ? queryDate - queryYearBirthdayDate : queryDate - lastYearBirthdayDate) / (24 * 60 * 60 * 1000);
         return React.createElement(

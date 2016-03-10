@@ -1,5 +1,7 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
+var React = require('react');
+var ReactDOM = require('react-dom');
+var lifeExpectancyTable = require('./lifeExpectancyTable');
+var lifeExpectancy = require('./lifeExpectancy');
 var App = React.createClass({
     getInitialState: function() {
         var today = new Date();

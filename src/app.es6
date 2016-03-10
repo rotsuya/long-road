@@ -11,20 +11,14 @@ var App = React.createClass({
         queryDate.setMinutes(0);
         queryDate.setSeconds(0);
         queryDate.setMilliseconds(0);
-        return {
-            birthdayDate: birthdayDate,
-            queryDate: queryDate,
-            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
-        };
+        const resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
+        return {birthdayDate, queryDate, resultTerm};
     },
     update: function(newState) {
         const birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
         const queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
-        this.setState({
-            birthdayDate: birthdayDate,
-            queryDate: queryDate,
-            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
-        });
+        const resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
+        this.setState({birthdayDate, queryDate, resultTerm});
     },
     render: function () {
         return (

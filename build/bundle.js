@@ -19111,20 +19111,14 @@ var App = React.createClass({
         queryDate.setMinutes(0);
         queryDate.setSeconds(0);
         queryDate.setMilliseconds(0);
-        return {
-            birthdayDate: birthdayDate,
-            queryDate: queryDate,
-            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
-        };
+        var resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
+        return { birthdayDate: birthdayDate, queryDate: queryDate, resultTerm: resultTerm };
     },
     update: function update(newState) {
         var birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
         var queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
-        this.setState({
-            birthdayDate: birthdayDate,
-            queryDate: queryDate,
-            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
-        });
+        var resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
+        this.setState({ birthdayDate: birthdayDate, queryDate: queryDate, resultTerm: resultTerm });
     },
     render: function render() {
         return React.createElement(
@@ -19533,12 +19527,7 @@ var WEEK = DAY * 7; // integer
 var YEAR = 365.2425 * DAY; // integer
 var MONTH = YEAR / 12; // integer
 
-module.exports = {
-    DAY: DAY,
-    WEEK: WEEK,
-    YEAR: YEAR,
-    MONTH: MONTH
-};
+module.exports = { DAY: DAY, WEEK: WEEK, YEAR: YEAR, MONTH: MONTH };
 
 },{}]},{},[159])
 //# sourceMappingURL=bundle.js.map

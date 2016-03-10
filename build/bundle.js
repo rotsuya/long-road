@@ -19100,26 +19100,30 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var lifeExpectancyTable = require('./lifeExpectancyTable.es6');
 var lifeExpectancy = require('./lifeExpectancy.es6');
+var util = require('./util.es6');
 var App = React.createClass({
     displayName: 'App',
 
     getInitialState: function getInitialState() {
-        var today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
+        var birthdayDate = new Date(1975, 12 - 1, 7);
+        var queryDate = new Date();
+        queryDate.setHours(0);
+        queryDate.setMinutes(0);
+        queryDate.setSeconds(0);
+        queryDate.setMilliseconds(0);
         return {
-            birthdayDate: new Date(1975, 12 - 1, 7),
-            queryDate: today,
-            resultDate: new Date(1970, 1 - 1, 1)
+            birthdayDate: birthdayDate,
+            queryDate: queryDate,
+            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
         };
     },
     update: function update(newState) {
+        var birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
+        var queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
         this.setState({
-            birthdayDate: newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate,
-            queryDate: newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate,
-            resultDate: this.state.resultDate
+            birthdayDate: birthdayDate,
+            queryDate: queryDate,
+            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
         });
     },
     render: function render() {
@@ -19128,7 +19132,7 @@ var App = React.createClass({
             null,
             React.createElement(Birthday, { birthdayDate: this.state.birthdayDate, update: this.update }),
             React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, update: this.update }),
-            React.createElement(Result, { resultDate: this.state.resultDate })
+            React.createElement(Result, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, resultTerm: this.state.resultTerm })
         );
     }
 });
@@ -19295,7 +19299,7 @@ var Result = React.createClass({
                 '結果'
             ),
             React.createElement(ResultDate, null),
-            React.createElement(ResultPeriod, null),
+            React.createElement(ResultPeriod, { resultTerm: this.props.resultTerm }),
             React.createElement(ResultPercentage, null)
         );
     }
@@ -19332,17 +19336,20 @@ var ResultPeriod = React.createClass({
     displayName: 'ResultPeriod',
 
     render: function render() {
+        var resultTerm = this.props.resultTerm;
+        var year = Math.floor(resultTerm / util.YEAR);
+        var date = Math.floor(resultTerm % util.YEAR / util.DAY);
         return React.createElement(
             'div',
             null,
             '残り',
-            React.createElement('input', { type: 'text', readonly: true }),
+            React.createElement('input', { type: 'number', value: year, readonly: true }),
             React.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'text', readonly: true }),
+            React.createElement('input', { type: 'number', value: date, readonly: true }),
             React.createElement(
                 'label',
                 null,
@@ -19369,7 +19376,7 @@ var ResultPercentage = React.createClass({
 });
 ReactDOM.render(React.createElement(App, null), document.getElementById('content'));
 
-},{"./lifeExpectancy.es6":160,"./lifeExpectancyTable.es6":161,"react":158,"react-dom":29}],160:[function(require,module,exports){
+},{"./lifeExpectancy.es6":160,"./lifeExpectancyTable.es6":161,"./util.es6":162,"react":158,"react-dom":29}],160:[function(require,module,exports){
 'use strict';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();

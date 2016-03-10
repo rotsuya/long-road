@@ -2,32 +2,36 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const lifeExpectancyTable = require('./lifeExpectancyTable.es6');
 const lifeExpectancy = require('./lifeExpectancy.es6');
+const util = require('./util.es6');
 var App = React.createClass({
     getInitialState: function() {
-        var today = new Date();
-        today.setHours(0);
-        today.setMinutes(0);
-        today.setSeconds(0);
-        today.setMilliseconds(0);
+        const birthdayDate = new Date(1975, 12 - 1, 7);
+        var queryDate = new Date();
+        queryDate.setHours(0);
+        queryDate.setMinutes(0);
+        queryDate.setSeconds(0);
+        queryDate.setMilliseconds(0);
         return {
-            birthdayDate: new Date(1975, 12 - 1, 7),
-            queryDate: today,
-            resultDate: new Date(1970, 1 - 1, 1)
+            birthdayDate: birthdayDate,
+            queryDate: queryDate,
+            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
         };
     },
     update: function(newState) {
+        const birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
+        const queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
         this.setState({
-            birthdayDate: newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate,
-            queryDate: newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate,
-            resultDate: this.state.resultDate
+            birthdayDate: birthdayDate,
+            queryDate: queryDate,
+            resultTerm: lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable)
         });
     },
     render: function () {
         return (
             <div>
                 <Birthday birthdayDate={this.state.birthdayDate} update={this.update} />
-                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} update={this.update} />
-                <Result resultDate={this.state.resultDate} />
+                <Query queryDate={this.state.queryDate} birthdayDate={this.state.birthdayDate} update={this.update} />
+                <Result queryDate={this.state.queryDate} birthdayDate={this.state.birthdayDate} resultTerm={this.state.resultTerm} />
             </div>
         );
     }
@@ -130,7 +134,7 @@ var Result = React.createClass({
             <div>
                 <h1>結果</h1>
                 <ResultDate />
-                <ResultPeriod />
+                <ResultPeriod resultTerm={this.props.resultTerm} />
                 <ResultPercentage />
             </div>
         );
@@ -152,12 +156,15 @@ var ResultDate = React.createClass({
 });
 var ResultPeriod = React.createClass({
     render: function () {
+        const resultTerm = this.props.resultTerm;
+        const year = Math.floor(resultTerm / util.YEAR);
+        const date = Math.floor((resultTerm % util.YEAR) / util.DAY);
         return (
             <div>
                 残り
-                <input type="text" readonly />
+                <input type="number" value={year} readonly />
                 <label>年</label>
-                <input type="text" readonly />
+                <input type="number" value={date} readonly />
                 <label>日</label>
             </div>
         );

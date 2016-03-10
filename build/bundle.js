@@ -19094,12 +19094,14 @@ module.exports = validateDOMNesting;
 module.exports = require('./lib/React');
 
 },{"./lib/React":53}],159:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var React = require("react");
-var ReactDOM = require("react-dom");
+var React = require('react');
+var ReactDOM = require('react-dom');
+var lifeExpectancyTable = require('./lifeExpectancyTable.es6');
+var lifeExpectancy = require('./lifeExpectancy.es6');
 var App = React.createClass({
-    displayName: "App",
+    displayName: 'App',
 
     getInitialState: function getInitialState() {
         var today = new Date();
@@ -19122,7 +19124,7 @@ var App = React.createClass({
     },
     render: function render() {
         return React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(Birthday, { birthdayDate: this.state.birthdayDate, update: this.update }),
             React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, update: this.update }),
@@ -19131,7 +19133,7 @@ var App = React.createClass({
     }
 });
 var Birthday = React.createClass({
-    displayName: "Birthday",
+    displayName: 'Birthday',
 
     _onChange: function _onChange() {
         var year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
@@ -19142,53 +19144,52 @@ var Birthday = React.createClass({
         });
     },
     render: function render() {
-        console.log(this.state);
         var birthdayDate = this.props.birthdayDate;
         var _onChange = this.props.onChange;
         return React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-                "h1",
+                'h1',
                 null,
-                "誕生日"
+                '誕生日'
             ),
             React.createElement(
-                "div",
+                'div',
                 null,
-                React.createElement("input", { type: "number", step: "1", value: birthdayDate.getFullYear(), onChange: this._onChange, ref: "year" }),
+                React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getFullYear(), onChange: this._onChange, ref: 'year' }),
                 React.createElement(
-                    "label",
+                    'label',
                     null,
-                    "年"
+                    '年'
                 ),
-                React.createElement("input", { type: "number", step: "1", value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: "month" }),
+                React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: 'month' }),
                 React.createElement(
-                    "label",
+                    'label',
                     null,
-                    "月"
+                    '月'
                 ),
-                React.createElement("input", { type: "number", step: "1", value: birthdayDate.getDate(), onChange: this._onChange, ref: "date" }),
+                React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getDate(), onChange: this._onChange, ref: 'date' }),
                 React.createElement(
-                    "label",
+                    'label',
                     null,
-                    "日"
+                    '日'
                 )
             )
         );
     }
 });
 var Query = React.createClass({
-    displayName: "Query",
+    displayName: 'Query',
 
     render: function render() {
         return React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-                "h1",
+                'h1',
                 null,
-                "調べる日"
+                '調べる日'
             ),
             React.createElement(QueryDate, { queryDate: this.props.queryDate, update: this.props.update }),
             React.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate, update: this.props.update })
@@ -19196,7 +19197,7 @@ var Query = React.createClass({
     }
 });
 var QueryDate = React.createClass({
-    displayName: "QueryDate",
+    displayName: 'QueryDate',
 
     _onChange: function _onChange() {
         var year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
@@ -19209,31 +19210,31 @@ var QueryDate = React.createClass({
     render: function render() {
         var queryDate = this.props.queryDate;
         return React.createElement(
-            "div",
+            'div',
             null,
-            React.createElement("input", { type: "number", step: "1", value: queryDate.getFullYear(), ref: "year", onChange: this._onChange }),
+            React.createElement('input', { type: 'number', step: '1', value: queryDate.getFullYear(), ref: 'year', onChange: this._onChange }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "年"
+                '年'
             ),
-            React.createElement("input", { type: "number", step: "1", value: queryDate.getMonth() + 1, ref: "month", onChange: this._onChange }),
+            React.createElement('input', { type: 'number', step: '1', value: queryDate.getMonth() + 1, ref: 'month', onChange: this._onChange }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "月"
+                '月'
             ),
-            React.createElement("input", { type: "number", step: "1", value: queryDate.getDate(), ref: "date", onChange: this._onChange }),
+            React.createElement('input', { type: 'number', step: '1', value: queryDate.getDate(), ref: 'date', onChange: this._onChange }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "日"
+                '日'
             )
         );
     }
 });
 var QueryAge = React.createClass({
-    displayName: "QueryAge",
+    displayName: 'QueryAge',
 
     _onChange: function _onChange() {
         var ageY = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
@@ -19264,34 +19265,34 @@ var QueryAge = React.createClass({
         var ageY = queryY - birthdayY - (isAfterBirthday ? 0 : 1);
         var ageD = (isAfterBirthday ? queryDate - queryYearBirthdayDate : queryDate - lastYearBirthdayDate) / (24 * 60 * 60 * 1000);
         return React.createElement(
-            "div",
+            'div',
             null,
-            React.createElement("input", { type: "number", step: "1", value: ageY, ref: "year", onChange: this._onChange }),
+            React.createElement('input', { type: 'number', step: '1', value: ageY, ref: 'year', onChange: this._onChange }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "歳"
+                '歳'
             ),
-            React.createElement("input", { type: "number", step: "1", value: ageD, ref: "date", onChange: this._onChange }),
+            React.createElement('input', { type: 'number', step: '1', value: ageD, ref: 'date', onChange: this._onChange }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "日"
+                '日'
             )
         );
     }
 });
 var Result = React.createClass({
-    displayName: "Result",
+    displayName: 'Result',
 
     render: function render() {
         return React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-                "h1",
+                'h1',
                 null,
-                "結果"
+                '結果'
             ),
             React.createElement(ResultDate, null),
             React.createElement(ResultPeriod, null),
@@ -19300,73 +19301,237 @@ var Result = React.createClass({
     }
 });
 var ResultDate = React.createClass({
-    displayName: "ResultDate",
+    displayName: 'ResultDate',
 
     render: function render() {
         return React.createElement(
-            "div",
+            'div',
             null,
-            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement('input', { type: 'text', readonly: true }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "年"
+                '年'
             ),
-            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement('input', { type: 'text', readonly: true }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "月"
+                '月'
             ),
-            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement('input', { type: 'text', readonly: true }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "日"
+                '日'
             )
         );
     }
 });
 var ResultPeriod = React.createClass({
-    displayName: "ResultPeriod",
+    displayName: 'ResultPeriod',
 
     render: function render() {
         return React.createElement(
-            "div",
+            'div',
             null,
-            "残り",
-            React.createElement("input", { type: "text", readonly: true }),
+            '残り',
+            React.createElement('input', { type: 'text', readonly: true }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "年"
+                '年'
             ),
-            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement('input', { type: 'text', readonly: true }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "日"
+                '日'
             )
         );
     }
 });
 var ResultPercentage = React.createClass({
-    displayName: "ResultPercentage",
+    displayName: 'ResultPercentage',
 
     render: function render() {
         return React.createElement(
-            "div",
+            'div',
             null,
-            React.createElement("input", { type: "text", readonly: true }),
+            React.createElement('input', { type: 'text', readonly: true }),
             React.createElement(
-                "label",
+                'label',
                 null,
-                "%"
+                '%'
             )
         );
     }
 });
 ReactDOM.render(React.createElement(App, null), document.getElementById('content'));
 
-},{"react":158,"react-dom":29}]},{},[159])
+},{"./lifeExpectancy.es6":160,"./lifeExpectancyTable.es6":161,"react":158,"react-dom":29}],160:[function(require,module,exports){
+'use strict';
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var util = require('./util.es6');
+
+var ORDER = 2;
+
+module.exports = function (x, table) {
+    var tableX = table.map(function (array) {
+        return array[0];
+    });
+    var tableLength = table.length;
+    var index = tableX.indexOf(x);
+    var minX = tableX[0];
+    var maxX = tableX[tableLength - 1];
+    if (x < minX || x > maxX) {
+        // error
+        return false;
+    }
+    if (index !== -1) {
+        return table[index][1];
+    }
+    var indexRight = tableX.findIndex(function (_x) {
+        return _x > x;
+    });
+    if (indexRight === -1) {
+        indexRight = tableLength - 1;
+    }
+    var sampleLength;
+    switch (ORDER) {
+        case 1:
+            sampleLength = 2;
+            break;
+        case 2:
+            sampleLength = 4;
+            break;
+        default:
+            // error
+            return;
+    }
+    var indexLeast = Math.min(Math.max(0, indexRight - sampleLength / 2), tableLength - sampleLength);
+    var samples = table.slice(indexLeast, indexLeast + sampleLength);
+    // indexRightが存在しないので-1
+    var params = getApproximateEquation(samples, ORDER);
+    var y = 0;
+    switch (ORDER) {
+        case 1:
+            y = params[0] * x + params[1];
+            break;
+        case 2:
+            y = params[0] * Math.pow(x, 2) + params[1] * x + params[2];
+            break;
+    }
+    return y;
+};
+
+function getApproximateEquation(samples, order) {
+    var n = samples.length;
+    switch (order) {
+        case 1:
+            var intermediates1 = samples.reduce(function (prev, sample) {
+                var _sample = _slicedToArray(sample, 2);
+
+                var x = _sample[0];
+                var y = _sample[1];
+
+                return [prev[0] + x * y, prev[1] + x, prev[2] + y, prev[3] + Math.pow(x, 2)];
+            }, [0, 0, 0, 0]);
+
+            var _intermediates = _slicedToArray(intermediates1, 4);
+
+            var sigmaXY = _intermediates[0];
+            var sigmaX = _intermediates[1];
+            var sigmaY = _intermediates[2];
+            var sigmaXSquare = _intermediates[3];
+
+            var slope = (n * sigmaXY - sigmaX * sigmaY) / (n * sigmaXSquare - sigmaX * sigmaX);
+            var intercept = (sigmaXSquare * sigmaY - sigmaXY * sigmaX) / (n * sigmaXSquare - sigmaX * sigmaX);
+            var variance1 = samples.reduce(function (prev, sample) {
+                var _sample2 = _slicedToArray(sample, 2);
+
+                var x = _sample2[0];
+                var y = _sample2[1];
+
+                return prev + Math.pow(y - (slope * x + intercept), 2) / n;
+            }, 0);
+            var sd1 = Math.sqrt(variance1);
+            return [slope, intercept, sd1];
+        case 2:
+            var intermediates2 = samples.reduce(function (prev, sample) {
+                var _sample3 = _slicedToArray(sample, 2);
+
+                var x = _sample3[0];
+                var y = _sample3[1];
+
+                return [prev[0] + x, prev[1] + Math.pow(x, 2), prev[2] + Math.pow(x, 3), prev[3] + Math.pow(x, 4), prev[4] + Math.pow(x, 2) * y, prev[5] + x * y, prev[6] + y];
+            }, [0, 0, 0, 0, 0, 0, 0]);
+
+            var _intermediates2 = _slicedToArray(intermediates2, 7);
+
+            var s1 = _intermediates2[0];
+            var s2 = _intermediates2[1];
+            var s3 = _intermediates2[2];
+            var s4 = _intermediates2[3];
+            var z1 = _intermediates2[4];
+            var z2 = _intermediates2[5];
+            var z3 = _intermediates2[6];
+
+            var denominator = (n * s2 - Math.pow(s1, 2)) * s4 + s2 * (s1 * s3 - Math.pow(s2, 2)) + s3 * (s1 * s2 - n * s3);
+            var a2 = ((s1 * s3 - Math.pow(s2, 2)) * z3 + (s1 * s2 - n * s3) * z2 + (n * s2 - Math.pow(s1, 2)) * z1) / denominator;
+            var a1 = ((s2 * s3 - s1 * s4) * z3 + (n * s4 - Math.pow(s2, 2)) * z2 + (s1 * s2 - n * s3) * z1) / denominator;
+            var a0 = ((s2 * s4 - Math.pow(s3, 2)) * z3 + (s2 * s3 - s1 * s4) * z2 + (s1 * s3 - Math.pow(s2, 2)) * z1) / denominator;
+            var variance = samples.reduce(function (prev, sample) {
+                var _sample4 = _slicedToArray(sample, 2);
+
+                var x = _sample4[0];
+                var y = _sample4[1];
+
+                return prev + Math.pow(y - (a2 * Math.pow(x, 2) + a1 * x + a0), 2) / n;
+            }, 0);
+            var sd2 = Math.sqrt(variance);
+            return [a2, a1, a0, sd2];
+            break;
+    }
+}
+
+},{"./util.es6":162}],161:[function(require,module,exports){
+'use strict';
+
+var util = require('./util.es6');
+
+var rawWeek = [[0, 80.50], [1, 80.54], [2, 80.53], [3, 80.51], [4, 80.50]];
+var rawMonth = [[2, 80.43], [3, 80.36], [6, 80.14]];
+var rawYear = [[1, 79.67], [2, 78.70], [3, 77.71], [4, 76.73], [5, 75.74], [6, 74.74], [7, 73.75], [8, 72.76], [9, 71.77], [10, 70.77], [11, 69.78], [12, 68.78], [13, 67.79], [14, 66.80], [15, 65.81], [16, 64.82], [17, 63.83], [18, 62.85], [19, 61.87], [20, 60.90], [21, 59.92], [22, 58.96], [23, 57.99], [24, 57.02], [25, 56.05], [26, 55.09], [27, 54.12], [28, 53.15], [29, 52.18], [30, 51.21], [31, 50.25], [32, 49.28], [33, 48.31], [34, 47.35], [35, 46.38], [36, 45.41], [37, 44.45], [38, 43.48], [39, 42.52], [40, 41.57], [41, 40.61], [42, 39.66], [43, 38.71], [44, 37.76], [45, 36.82], [46, 35.89], [47, 34.95], [48, 34.02], [49, 33.10], [50, 32.18], [51, 31.27], [52, 30.36], [53, 29.46], [54, 28.57], [55, 27.68], [56, 26.80], [57, 25.93], [58, 25.07], [59, 24.21], [60, 23.36], [61, 22.52], [62, 21.70], [63, 20.88], [64, 20.08], [65, 19.29], [66, 18.51], [67, 17.74], [68, 16.98], [69, 16.23], [70, 15.49], [71, 14.76], [72, 14.04], [73, 13.33], [74, 12.63], [75, 11.94], [76, 11.27], [77, 10.62], [78, 9.99], [79, 9.37], [80, 8.79], [81, 8.22], [82, 7.69], [83, 7.18], [84, 6.70], [85, 6.24], [86, 5.82], [87, 5.41], [88, 5.03], [89, 4.68], [90, 4.35], [91, 4.04], [92, 3.76], [93, 3.49], [94, 3.25], [95, 3.02], [96, 2.81], [97, 2.61], [98, 2.43], [99, 2.25], [100, 2.09], [101, 1.95], [102, 1.81], [103, 1.68], [104, 1.56], [105, 1.45]];
+
+var tableWeek = rawWeek.map(function (array) {
+    return [array[0] * util.WEEK, Math.round(array[1] * util.YEAR)];
+});
+var tableMonth = rawMonth.map(function (array) {
+    return [Math.round(array[0] * util.MONTH), Math.round(array[1] * util.YEAR)];
+});
+var tableYear = rawYear.map(function (array) {
+    return [Math.round(array[0] * util.YEAR), Math.round(array[1] * util.YEAR)];
+});
+
+module.exports = tableWeek.concat(tableMonth, tableYear);
+
+},{"./util.es6":162}],162:[function(require,module,exports){
+"use strict";
+
+var DAY = 24 * 60 * 60 * 1000; // integer
+var WEEK = DAY * 7; // integer
+var YEAR = 365.2425 * DAY; // integer
+var MONTH = YEAR / 12; // integer
+
+module.exports = {
+    DAY: DAY,
+    WEEK: WEEK,
+    YEAR: YEAR,
+    MONTH: MONTH
+};
+
+},{}]},{},[159])
 //# sourceMappingURL=bundle.js.map

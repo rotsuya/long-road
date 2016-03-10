@@ -1,5 +1,7 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
+const React = require('react');
+const ReactDOM = require('react-dom');
+const lifeExpectancyTable = require('./lifeExpectancyTable.es6');
+const lifeExpectancy = require('./lifeExpectancy.es6');
 var App = React.createClass({
     getInitialState: function() {
         var today = new Date();
@@ -40,7 +42,6 @@ var Birthday = React.createClass({
         });
     },
     render: function () {
-        console.log(this.state);
         const birthdayDate = this.props.birthdayDate;
         const _onChange = this.props.onChange;
         return (

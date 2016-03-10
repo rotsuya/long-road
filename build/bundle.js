@@ -19116,7 +19116,7 @@ var App = React.createClass({
     update: function update(newState) {
         this.setState({
             birthdayDate: newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate,
-            queryDate: this.state.queryDate,
+            queryDate: newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate,
             resultDate: this.state.resultDate
         });
     },
@@ -19125,7 +19125,7 @@ var App = React.createClass({
             "div",
             null,
             React.createElement(Birthday, { birthdayDate: this.state.birthdayDate, update: this.update }),
-            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, onChange: this.update }),
+            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, update: this.update }),
             React.createElement(Result, { resultDate: this.state.resultDate })
         );
     }
@@ -19190,32 +19190,40 @@ var Query = React.createClass({
                 null,
                 "調べる日"
             ),
-            React.createElement(QueryDate, { queryDate: this.props.queryDate }),
-            React.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate })
+            React.createElement(QueryDate, { queryDate: this.props.queryDate, update: this.props.update }),
+            React.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate, update: this.props.update })
         );
     }
 });
 var QueryDate = React.createClass({
     displayName: "QueryDate",
 
+    _onChange: function _onChange() {
+        var year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
+        var month = ReactDOM.findDOMNode(this.refs.month).value.trim() - 0;
+        var date = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        this.props.update({
+            queryDate: new Date(year, month - 1, date)
+        });
+    },
     render: function render() {
         var queryDate = this.props.queryDate;
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", step: "1", value: queryDate.getFullYear() }),
+            React.createElement("input", { type: "number", step: "1", value: queryDate.getFullYear(), ref: "year", onChange: this._onChange }),
             React.createElement(
                 "label",
                 null,
                 "年"
             ),
-            React.createElement("input", { type: "number", step: "1", value: queryDate.getMonth() + 1 }),
+            React.createElement("input", { type: "number", step: "1", value: queryDate.getMonth() + 1, ref: "month", onChange: this._onChange }),
             React.createElement(
                 "label",
                 null,
                 "月"
             ),
-            React.createElement("input", { type: "number", step: "1", value: queryDate.getDate() }),
+            React.createElement("input", { type: "number", step: "1", value: queryDate.getDate(), ref: "date", onChange: this._onChange }),
             React.createElement(
                 "label",
                 null,

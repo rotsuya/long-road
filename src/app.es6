@@ -16,7 +16,7 @@ var App = React.createClass({
     update: function(newState) {
         this.setState({
             birthdayDate: newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate,
-            queryDate: this.state.queryDate,
+            queryDate: newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate,
             resultDate: this.state.resultDate
         });
     },
@@ -24,7 +24,7 @@ var App = React.createClass({
         return (
             <div>
                 <Birthday birthdayDate={this.state.birthdayDate} update={this.update} />
-                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} onChange={this.update} />
+                <Query queryDate={this.state.queryDate}  birthdayDate={this.state.birthdayDate} update={this.update} />
                 <Result resultDate={this.state.resultDate} />
             </div>
         );
@@ -63,22 +63,30 @@ var Query = React.createClass({
         return (
             <div>
                 <h1>調べる日</h1>
-                <QueryDate queryDate={this.props.queryDate} />
-                <QueryAge queryDate={this.props.queryDate} birthdayDate={this.props.birthdayDate} />
+                <QueryDate queryDate={this.props.queryDate} update={this.props.update} />
+                <QueryAge queryDate={this.props.queryDate} birthdayDate={this.props.birthdayDate} update={this.props.update} />
             </div>
         );
     }
 });
 var QueryDate = React.createClass({
+    _onChange: function () {
+        const year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
+        const month = ReactDOM.findDOMNode(this.refs.month).value.trim() - 0;
+        const date = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        this.props.update({
+            queryDate: new Date(year, month - 1, date)
+        });
+    },
     render: function () {
         const queryDate = this.props.queryDate;
         return (
             <div>
-                <input type="number" step="1" value={queryDate.getFullYear()} />
+                <input type="number" step="1" value={queryDate.getFullYear()} ref="year" onChange={this._onChange} />
                 <label>年</label>
-                <input type="number" step="1" value={queryDate.getMonth() + 1} />
+                <input type="number" step="1" value={queryDate.getMonth() + 1} ref="month" onChange={this._onChange} />
                 <label>月</label>
-                <input type="number" step="1" value={queryDate.getDate()} />
+                <input type="number" step="1" value={queryDate.getDate()} ref="date" onChange={this._onChange} />
                 <label>日</label>
             </div>
         );

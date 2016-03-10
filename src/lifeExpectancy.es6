@@ -1,13 +1,10 @@
 'use strict';
 
-const DAY = 24 * 60 * 60 * 1000;  // integer
-const WEEK = DAY * 7;             // integer
-const YEAR = 365.2425 * DAY;      // integer
-const MONTH = YEAR / 12;          // integer
+const util = require('./util.es6');
 
 const ORDER = 2;
 
-module.exports = function(ageValue, table) {
+module.exports = function(x, table) {
     const tableX = table.map((array) => {
         return array[0];
     });
@@ -22,7 +19,7 @@ module.exports = function(ageValue, table) {
     if (index !== -1) {
         return table[index][1];
     }
-    let indexRight = (table.findIndex((_x) => {
+    let indexRight = (tableX.findIndex((_x) => {
         return (_x > x);
     }));
     if (indexRight === -1) {
@@ -55,10 +52,6 @@ module.exports = function(ageValue, table) {
     }
     return y;
 };
-
-function getSamples () {
-
-}
 
 function getApproximateEquation (samples, order) {
     const n = samples.length;
@@ -95,7 +88,5 @@ function getApproximateEquation (samples, order) {
             const sd2 = Math.sqrt(variance);
             return [a2, a1, a0, sd2];
             break;
-            defaut:
-                return false;
     }
 }

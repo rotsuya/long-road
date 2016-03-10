@@ -8,9 +8,9 @@ var App = React.createClass({
         today.setSeconds(0);
         today.setMilliseconds(0);
         return {
-            birthdayDate: new Date(1970, 2, 8),
+            birthdayDate: new Date(1975, 12 - 1, 7),
             queryDate: today,
-            resultDate: new Date(1970, 0, 1)
+            resultDate: new Date(1970, 1 - 1, 1)
         };
     },
     update: function(newState) {
@@ -93,6 +93,16 @@ var QueryDate = React.createClass({
     }
 });
 var QueryAge = React.createClass({
+    _onChange: function () {
+        const ageY = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
+        const ageD = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        const birthdayDate = this.props.birthdayDate;
+        const [birthdayY, birthdayM, birthdayD] = [birthdayDate.getFullYear(), birthdayDate.getMonth() + 1, birthdayDate.getDate()];
+        const lastBirthday = new Date(birthdayY + ageY, birthdayM - 1, birthdayD);
+        this.props.update({
+            queryDate: new Date(lastBirthday.getTime() + ageD * 24 * 60 * 60 * 1000)
+        });
+    },
     render: function () {
         const queryDate = this.props.queryDate;
         const birthdayDate = this.props.birthdayDate;
@@ -105,9 +115,9 @@ var QueryAge = React.createClass({
         const ageD = (isAfterBirthday ? (queryDate - queryYearBirthdayDate) : (queryDate - lastYearBirthdayDate)) / (24 * 60 * 60 * 1000);
         return (
             <div>
-                <input type="number" step="1" value={ageY} />
+                <input type="number" step="1" value={ageY} ref="year" onChange={this._onChange} />
                 <label>歳</label>
-                <input type="number" step="1" value={ageD} />
+                <input type="number" step="1" value={ageD} ref="date" onChange={this._onChange} />
                 <label>日</label>
             </div>
         );

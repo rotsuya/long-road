@@ -19108,9 +19108,9 @@ var App = React.createClass({
         today.setSeconds(0);
         today.setMilliseconds(0);
         return {
-            birthdayDate: new Date(1970, 2, 8),
+            birthdayDate: new Date(1975, 12 - 1, 7),
             queryDate: today,
-            resultDate: new Date(1970, 0, 1)
+            resultDate: new Date(1970, 1 - 1, 1)
         };
     },
     update: function update(newState) {
@@ -19235,6 +19235,19 @@ var QueryDate = React.createClass({
 var QueryAge = React.createClass({
     displayName: "QueryAge",
 
+    _onChange: function _onChange() {
+        var ageY = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
+        var ageD = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        var birthdayDate = this.props.birthdayDate;
+        var birthdayY = birthdayDate.getFullYear();
+        var birthdayM = birthdayDate.getMonth() + 1;
+        var birthdayD = birthdayDate.getDate();
+
+        var lastBirthday = new Date(birthdayY + ageY, birthdayM - 1, birthdayD);
+        this.props.update({
+            queryDate: new Date(lastBirthday.getTime() + ageD * 24 * 60 * 60 * 1000)
+        });
+    },
     render: function render() {
         var queryDate = this.props.queryDate;
         var birthdayDate = this.props.birthdayDate;
@@ -19253,13 +19266,13 @@ var QueryAge = React.createClass({
         return React.createElement(
             "div",
             null,
-            React.createElement("input", { type: "number", step: "1", value: ageY }),
+            React.createElement("input", { type: "number", step: "1", value: ageY, ref: "year", onChange: this._onChange }),
             React.createElement(
                 "label",
                 null,
                 "歳"
             ),
-            React.createElement("input", { type: "number", step: "1", value: ageD }),
+            React.createElement("input", { type: "number", step: "1", value: ageD, ref: "date", onChange: this._onChange }),
             React.createElement(
                 "label",
                 null,

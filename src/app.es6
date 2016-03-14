@@ -127,22 +127,26 @@ var Result = React.createClass({
         return (
             <div>
                 <h1>結果</h1>
-                <ResultDate />
+                <ResultDate queryDate={this.props.queryDate} resultTerm={this.props.resultTerm} />
                 <ResultPeriod resultTerm={this.props.resultTerm} />
-                <ResultPercentage />
+                <ResultLifetimePeriod birthdayDate={this.props.birthdayDate} queryDate={this.props.queryDate} resultTerm={this.props.resultTerm} />
+                <ResultPercentage birthdayDate={this.props.birthdayDate} queryDate={this.props.queryDate} resultTerm={this.props.resultTerm} />
             </div>
         );
     }
 });
 var ResultDate = React.createClass({
     render: function () {
+        const queryDate = this.props.queryDate;
+        const resultTerm = this.props.resultTerm;
+        const deathDate = new Date(queryDate.getTime() + resultTerm);
         return (
             <div>
-                <input type="text" readonly />
+                <input type="text" value={deathDate.getFullYear()} readonly />
                 <label>年</label>
-                <input type="text" readonly />
+                <input type="text" value={deathDate.getMonth() + 1} readonly />
                 <label>月</label>
-                <input type="text" readonly />
+                <input type="text" value={deathDate.getDate()} readonly />
                 <label>日</label>
             </div>
         );
@@ -164,11 +168,38 @@ var ResultPeriod = React.createClass({
         );
     }
 });
-var ResultPercentage = React.createClass({
+var ResultLifetimePeriod = React.createClass({
     render: function () {
+        const birthdayDate = this.props.birthdayDate;
+        const queryDate = this.props.queryDate;
+        const lifetime = queryDate - birthdayDate + this.props.resultTerm;
+        const year = Math.floor(lifetime / util.YEAR);
+        const date = Math.floor((lifetime % util.YEAR) / util.DAY);
         return (
             <div>
-                <input type="text" readonly />
+                寿命
+                <input type="number" value={year} readonly />
+                <label>年</label>
+                <input type="number" value={date} readonly />
+                <label>日</label>
+            </div>
+        );
+    }
+});
+var ResultPercentage = React.createClass({
+    render: function () {
+        const birthdayDate = this.props.birthdayDate;
+        const queryDate = this.props.queryDate;
+        const resultTerm = this.props.resultTerm;
+        const ageTerm = queryDate - birthdayDate;
+        const restPercent = Math.round(resultTerm / (ageTerm + resultTerm) * 100000) / 1000;
+        return (
+            <div>
+                過ぎた
+                <input type="text" value={100 - restPercent} readonly />
+                <label>%</label><br />
+                残り
+                <input type="text" value={restPercent} readonly />
                 <label>%</label>
             </div>
         );

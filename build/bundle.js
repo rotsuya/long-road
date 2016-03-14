@@ -19292,9 +19292,10 @@ var Result = React.createClass({
                 null,
                 '結果'
             ),
-            React.createElement(ResultDate, null),
+            React.createElement(ResultDate, { queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
             React.createElement(ResultPeriod, { resultTerm: this.props.resultTerm }),
-            React.createElement(ResultPercentage, null)
+            React.createElement(ResultLifetimePeriod, { birthdayDate: this.props.birthdayDate, queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
+            React.createElement(ResultPercentage, { birthdayDate: this.props.birthdayDate, queryDate: this.props.queryDate, resultTerm: this.props.resultTerm })
         );
     }
 });
@@ -19302,22 +19303,25 @@ var ResultDate = React.createClass({
     displayName: 'ResultDate',
 
     render: function render() {
+        var queryDate = this.props.queryDate;
+        var resultTerm = this.props.resultTerm;
+        var deathDate = new Date(queryDate.getTime() + resultTerm);
         return React.createElement(
             'div',
             null,
-            React.createElement('input', { type: 'text', readonly: true }),
+            React.createElement('input', { type: 'text', value: deathDate.getFullYear(), readonly: true }),
             React.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'text', readonly: true }),
+            React.createElement('input', { type: 'text', value: deathDate.getMonth() + 1, readonly: true }),
             React.createElement(
                 'label',
                 null,
                 '月'
             ),
-            React.createElement('input', { type: 'text', readonly: true }),
+            React.createElement('input', { type: 'text', value: deathDate.getDate(), readonly: true }),
             React.createElement(
                 'label',
                 null,
@@ -19352,14 +19356,56 @@ var ResultPeriod = React.createClass({
         );
     }
 });
+var ResultLifetimePeriod = React.createClass({
+    displayName: 'ResultLifetimePeriod',
+
+    render: function render() {
+        var birthdayDate = this.props.birthdayDate;
+        var queryDate = this.props.queryDate;
+        var lifetime = queryDate - birthdayDate + this.props.resultTerm;
+        var year = Math.floor(lifetime / util.YEAR);
+        var date = Math.floor(lifetime % util.YEAR / util.DAY);
+        return React.createElement(
+            'div',
+            null,
+            '寿命',
+            React.createElement('input', { type: 'number', value: year, readonly: true }),
+            React.createElement(
+                'label',
+                null,
+                '年'
+            ),
+            React.createElement('input', { type: 'number', value: date, readonly: true }),
+            React.createElement(
+                'label',
+                null,
+                '日'
+            )
+        );
+    }
+});
 var ResultPercentage = React.createClass({
     displayName: 'ResultPercentage',
 
     render: function render() {
+        var birthdayDate = this.props.birthdayDate;
+        var queryDate = this.props.queryDate;
+        var resultTerm = this.props.resultTerm;
+        var ageTerm = queryDate - birthdayDate;
+        var restPercent = Math.round(resultTerm / (ageTerm + resultTerm) * 100000) / 1000;
         return React.createElement(
             'div',
             null,
-            React.createElement('input', { type: 'text', readonly: true }),
+            '過ぎた',
+            React.createElement('input', { type: 'text', value: 100 - restPercent, readonly: true }),
+            React.createElement(
+                'label',
+                null,
+                '%'
+            ),
+            React.createElement('br', null),
+            '残り',
+            React.createElement('input', { type: 'text', value: restPercent, readonly: true }),
             React.createElement(
                 'label',
                 null,

@@ -23,9 +23,20 @@ var App = React.createClass({
     render: function () {
         return (
             <div>
-                <Birthday birthdayDate={this.state.birthdayDate} update={this.update} />
+                <Configuration birthdayDate={this.state.birthdayDate} update={this.update} />
                 <Query queryDate={this.state.queryDate} birthdayDate={this.state.birthdayDate} update={this.update} />
                 <Result queryDate={this.state.queryDate} birthdayDate={this.state.birthdayDate} resultTerm={this.state.resultTerm} />
+            </div>
+        );
+    }
+});
+var Configuration = React.createClass({
+    render: function () {
+        return (
+            <div>
+                <h1>初期設定</h1>
+                <Birthday birthdayDate={this.props.birthdayDate} update={this.props.update} />
+                <Sex />
             </div>
         );
     }
@@ -44,15 +55,26 @@ var Birthday = React.createClass({
         const _onChange = this.props.onChange;
         return (
             <div>
-                <h1>誕生日</h1>
-                <div>
-                    <input type="number" step="1" value={birthdayDate.getFullYear()} onChange={this._onChange} ref="year" />
-                    <label>年</label>
-                    <input type="number" step="1" value={birthdayDate.getMonth() + 1} onChange={this._onChange} ref="month" />
-                    <label>月</label>
-                    <input type="number" step="1" value={birthdayDate.getDate()} onChange={this._onChange} ref="date" />
-                    <label>日</label>
-                </div>
+                <h2>生年月日</h2>
+                <input type="number" step="1" value={birthdayDate.getFullYear()} onChange={this._onChange} ref="year" />
+                <label>年</label>
+                <input type="number" step="1" value={birthdayDate.getMonth() + 1} onChange={this._onChange} ref="month" />
+                <label>月</label>
+                <input type="number" step="1" value={birthdayDate.getDate()} onChange={this._onChange} ref="date" />
+                <label>日</label>
+            </div>
+        );
+    }
+});
+var Sex = React.createClass({
+    render: function () {
+        return (
+            <div>
+                <h2>性別</h2>
+                <input type="radio" name="sex" checked="checked" readonly="readonly" />
+                <label>男性</label><br />
+                <input type="radio" name="sex" readonly="readonly" />
+                <label>女性</label>
             </div>
         );
     }
@@ -61,7 +83,7 @@ var Query = React.createClass({
     render: function () {
         return (
             <div>
-                <h1>調べる日</h1>
+                <h1>入力</h1>
                 <QueryDate queryDate={this.props.queryDate} update={this.props.update} />
                 <QueryAge queryDate={this.props.queryDate} birthdayDate={this.props.birthdayDate} update={this.props.update} />
             </div>
@@ -81,6 +103,7 @@ var QueryDate = React.createClass({
         const queryDate = this.props.queryDate;
         return (
             <div>
+                <h2>この日まで生きていた場合</h2>
                 <input type="number" step="1" value={queryDate.getFullYear()} ref="year" onChange={this._onChange} />
                 <label>年</label>
                 <input type="number" step="1" value={queryDate.getMonth() + 1} ref="month" onChange={this._onChange} />
@@ -114,6 +137,7 @@ var QueryAge = React.createClass({
         const ageD = (isAfterBirthday ? (queryDate - queryYearBirthdayDate) : (queryDate - lastYearBirthdayDate)) / (24 * 60 * 60 * 1000);
         return (
             <div>
+                <h2>この年齢まで生きていた場合</h2>
                 <input type="number" step="1" value={ageY} ref="year" onChange={this._onChange} />
                 <label>歳</label>
                 <input type="number" step="1" value={ageD} ref="date" onChange={this._onChange} />
@@ -126,7 +150,7 @@ var Result = React.createClass({
     render: function () {
         return (
             <div>
-                <h1>結果</h1>
+                <h1>平均余命</h1>
                 <ResultDate queryDate={this.props.queryDate} resultTerm={this.props.resultTerm} />
                 <ResultPeriod resultTerm={this.props.resultTerm} />
                 <ResultLifetimePeriod birthdayDate={this.props.birthdayDate} queryDate={this.props.queryDate} resultTerm={this.props.resultTerm} />
@@ -142,6 +166,7 @@ var ResultDate = React.createClass({
         const deathDate = new Date(queryDate.getTime() + resultTerm);
         return (
             <div>
+                <h2>亡くなる日</h2>
                 <input type="text" value={deathDate.getFullYear()} readonly />
                 <label>年</label>
                 <input type="text" value={deathDate.getMonth() + 1} readonly />
@@ -159,7 +184,7 @@ var ResultPeriod = React.createClass({
         const date = Math.floor((resultTerm % util.YEAR) / util.DAY);
         return (
             <div>
-                残り
+                <h2>残りの人生の期間</h2>
                 <input type="number" value={year} readonly />
                 <label>年</label>
                 <input type="number" value={date} readonly />
@@ -177,7 +202,7 @@ var ResultLifetimePeriod = React.createClass({
         const date = Math.floor((lifetime % util.YEAR) / util.DAY);
         return (
             <div>
-                寿命
+                <h2>寿命</h2>
                 <input type="number" value={year} readonly />
                 <label>年</label>
                 <input type="number" value={date} readonly />
@@ -195,10 +220,10 @@ var ResultPercentage = React.createClass({
         const restPercent = Math.round(resultTerm / (ageTerm + resultTerm) * 100000) / 1000;
         return (
             <div>
-                過ぎた
+                <h2>生きた割合</h2>
                 <input type="text" value={100 - restPercent} readonly />
                 <label>%</label><br />
-                残り
+                <h2>残りの割合</h2>
                 <input type="text" value={restPercent} readonly />
                 <label>%</label>
             </div>

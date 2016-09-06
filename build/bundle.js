@@ -19124,9 +19124,26 @@ var App = React.createClass({
         return React.createElement(
             'div',
             null,
-            React.createElement(Birthday, { birthdayDate: this.state.birthdayDate, update: this.update }),
+            React.createElement(Configuration, { birthdayDate: this.state.birthdayDate, update: this.update }),
             React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, update: this.update }),
             React.createElement(Result, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, resultTerm: this.state.resultTerm })
+        );
+    }
+});
+var Configuration = React.createClass({
+    displayName: 'Configuration',
+
+    render: function render() {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'h1',
+                null,
+                '初期設定'
+            ),
+            React.createElement(Birthday, { birthdayDate: this.props.birthdayDate, update: this.props.update }),
+            React.createElement(Sex, null)
         );
     }
 });
@@ -19148,31 +19165,55 @@ var Birthday = React.createClass({
             'div',
             null,
             React.createElement(
-                'h1',
+                'h2',
                 null,
-                '誕生日'
+                '生年月日'
             ),
+            React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getFullYear(), onChange: this._onChange, ref: 'year' }),
             React.createElement(
-                'div',
+                'label',
                 null,
-                React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getFullYear(), onChange: this._onChange, ref: 'year' }),
-                React.createElement(
-                    'label',
-                    null,
-                    '年'
-                ),
-                React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: 'month' }),
-                React.createElement(
-                    'label',
-                    null,
-                    '月'
-                ),
-                React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getDate(), onChange: this._onChange, ref: 'date' }),
-                React.createElement(
-                    'label',
-                    null,
-                    '日'
-                )
+                '年'
+            ),
+            React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: 'month' }),
+            React.createElement(
+                'label',
+                null,
+                '月'
+            ),
+            React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getDate(), onChange: this._onChange, ref: 'date' }),
+            React.createElement(
+                'label',
+                null,
+                '日'
+            )
+        );
+    }
+});
+var Sex = React.createClass({
+    displayName: 'Sex',
+
+    render: function render() {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'h2',
+                null,
+                '性別'
+            ),
+            React.createElement('input', { type: 'radio', name: 'sex', checked: 'checked', readonly: 'readonly' }),
+            React.createElement(
+                'label',
+                null,
+                '男性'
+            ),
+            React.createElement('br', null),
+            React.createElement('input', { type: 'radio', name: 'sex', readonly: 'readonly' }),
+            React.createElement(
+                'label',
+                null,
+                '女性'
             )
         );
     }
@@ -19187,7 +19228,7 @@ var Query = React.createClass({
             React.createElement(
                 'h1',
                 null,
-                '調べる日'
+                '入力'
             ),
             React.createElement(QueryDate, { queryDate: this.props.queryDate, update: this.props.update }),
             React.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate, update: this.props.update })
@@ -19210,6 +19251,11 @@ var QueryDate = React.createClass({
         return React.createElement(
             'div',
             null,
+            React.createElement(
+                'h2',
+                null,
+                'この日まで生きていた場合'
+            ),
             React.createElement('input', { type: 'number', step: '1', value: queryDate.getFullYear(), ref: 'year', onChange: this._onChange }),
             React.createElement(
                 'label',
@@ -19265,6 +19311,11 @@ var QueryAge = React.createClass({
         return React.createElement(
             'div',
             null,
+            React.createElement(
+                'h2',
+                null,
+                'この年齢まで生きていた場合'
+            ),
             React.createElement('input', { type: 'number', step: '1', value: ageY, ref: 'year', onChange: this._onChange }),
             React.createElement(
                 'label',
@@ -19290,7 +19341,7 @@ var Result = React.createClass({
             React.createElement(
                 'h1',
                 null,
-                '結果'
+                '平均余命'
             ),
             React.createElement(ResultDate, { queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
             React.createElement(ResultPeriod, { resultTerm: this.props.resultTerm }),
@@ -19309,6 +19360,11 @@ var ResultDate = React.createClass({
         return React.createElement(
             'div',
             null,
+            React.createElement(
+                'h2',
+                null,
+                '亡くなる日'
+            ),
             React.createElement('input', { type: 'text', value: deathDate.getFullYear(), readonly: true }),
             React.createElement(
                 'label',
@@ -19340,7 +19396,11 @@ var ResultPeriod = React.createClass({
         return React.createElement(
             'div',
             null,
-            '残り',
+            React.createElement(
+                'h2',
+                null,
+                '残りの人生の期間'
+            ),
             React.createElement('input', { type: 'number', value: year, readonly: true }),
             React.createElement(
                 'label',
@@ -19368,7 +19428,11 @@ var ResultLifetimePeriod = React.createClass({
         return React.createElement(
             'div',
             null,
-            '寿命',
+            React.createElement(
+                'h2',
+                null,
+                '寿命'
+            ),
             React.createElement('input', { type: 'number', value: year, readonly: true }),
             React.createElement(
                 'label',
@@ -19396,7 +19460,11 @@ var ResultPercentage = React.createClass({
         return React.createElement(
             'div',
             null,
-            '過ぎた',
+            React.createElement(
+                'h2',
+                null,
+                '生きた割合'
+            ),
             React.createElement('input', { type: 'text', value: 100 - restPercent, readonly: true }),
             React.createElement(
                 'label',
@@ -19404,7 +19472,11 @@ var ResultPercentage = React.createClass({
                 '%'
             ),
             React.createElement('br', null),
-            '残り',
+            React.createElement(
+                'h2',
+                null,
+                '残りの割合'
+            ),
             React.createElement('input', { type: 'text', value: restPercent, readonly: true }),
             React.createElement(
                 'label',

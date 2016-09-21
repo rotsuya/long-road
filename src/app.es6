@@ -1,26 +1,29 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const lifeExpectancyTable = require('./lifeExpectancyTable.es6');
-const lifeExpectancy = require('./lifeExpectancy.es6');
-const util = require('./util.es6');
-var App = React.createClass({
-    getInitialState: function() {
-        const birthdayDate = new Date(1975, 12 - 1, 7);
+import React from 'react';
+import ReactDOM from 'react-dom';
+import lifeExpectancyTable from './lifeExpectancyTable.es6';
+import lifeExpectancy from './lifeExpectancy.es6';
+import util from './util.es6';
+
+class App extends React.Component {
+    constructor (props) {
+        super(props);
+        this.state = {};
+        this.state.birthdayDate = new Date(1975, 12 - 1, 7);
         var queryDate = new Date();
         queryDate.setHours(0);
         queryDate.setMinutes(0);
         queryDate.setSeconds(0);
         queryDate.setMilliseconds(0);
-        const resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
-        return {birthdayDate, queryDate, resultTerm};
-    },
-    update: function(newState) {
+        this.state.queryDate = queryDate;
+        this.state.resultTerm = lifeExpectancy(queryDate - this.state.birthdayDate, lifeExpectancyTable);
+    }
+    update (newState) {
         const birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
         const queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
         const resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
         this.setState({birthdayDate, queryDate, resultTerm});
-    },
-    render: function () {
+    }
+    render () {
         return (
             <div>
                 <Configuration birthdayDate={this.state.birthdayDate} update={this.update} />
@@ -29,18 +32,19 @@ var App = React.createClass({
             </div>
         );
     }
-});
-var Configuration = React.createClass({
-    render: function () {
+}
+
+class Configuration extends React.Component {
+    render () {
         return (
             <div>
                 <h1>初期設定</h1>
-                <Birthday birthdayDate={this.props.birthdayDate} update={this.props.update} />
+                <Birthday birthdayDate={this.props.birthdayDate} update={this.props.update}/>
                 <Sex />
             </div>
         );
     }
-});
+}
 var Birthday = React.createClass({
     _onChange: function() {
         const year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;

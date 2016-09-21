@@ -19096,64 +19096,116 @@ module.exports = require('./lib/React');
 },{"./lib/React":53}],159:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var lifeExpectancyTable = require('./lifeExpectancyTable.es6');
-var lifeExpectancy = require('./lifeExpectancy.es6');
-var util = require('./util.es6');
-var App = React.createClass({
-    displayName: 'App',
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    getInitialState: function getInitialState() {
-        var birthdayDate = new Date(1975, 12 - 1, 7);
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _lifeExpectancyTable = require('./lifeExpectancyTable.es6');
+
+var _lifeExpectancyTable2 = _interopRequireDefault(_lifeExpectancyTable);
+
+var _lifeExpectancy = require('./lifeExpectancy.es6');
+
+var _lifeExpectancy2 = _interopRequireDefault(_lifeExpectancy);
+
+var _util = require('./util.es6');
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var App = function (_React$Component) {
+    _inherits(App, _React$Component);
+
+    function App(props) {
+        _classCallCheck(this, App);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(App).call(this, props));
+
+        _this.state = {};
+        _this.state.birthdayDate = new Date(1975, 12 - 1, 7);
         var queryDate = new Date();
         queryDate.setHours(0);
         queryDate.setMinutes(0);
         queryDate.setSeconds(0);
         queryDate.setMilliseconds(0);
-        var resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
-        return { birthdayDate: birthdayDate, queryDate: queryDate, resultTerm: resultTerm };
-    },
-    update: function update(newState) {
-        var birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
-        var queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
-        var resultTerm = lifeExpectancy(queryDate - birthdayDate, lifeExpectancyTable);
-        this.setState({ birthdayDate: birthdayDate, queryDate: queryDate, resultTerm: resultTerm });
-    },
-    render: function render() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(Configuration, { birthdayDate: this.state.birthdayDate, update: this.update }),
-            React.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, update: this.update }),
-            React.createElement(Result, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, resultTerm: this.state.resultTerm })
-        );
+        _this.state.queryDate = queryDate;
+        _this.state.resultTerm = (0, _lifeExpectancy2.default)(queryDate - _this.state.birthdayDate, _lifeExpectancyTable2.default);
+        return _this;
     }
-});
-var Configuration = React.createClass({
-    displayName: 'Configuration',
 
-    render: function render() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                'h1',
+    _createClass(App, [{
+        key: 'update',
+        value: function update(newState) {
+            var birthdayDate = newState.hasOwnProperty('birthdayDate') ? newState.birthdayDate : this.state.birthdayDate;
+            var queryDate = newState.hasOwnProperty('queryDate') ? newState.queryDate : this.state.queryDate;
+            var resultTerm = (0, _lifeExpectancy2.default)(queryDate - birthdayDate, _lifeExpectancyTable2.default);
+            this.setState({ birthdayDate: birthdayDate, queryDate: queryDate, resultTerm: resultTerm });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
                 null,
-                '初期設定'
-            ),
-            React.createElement(Birthday, { birthdayDate: this.props.birthdayDate, update: this.props.update }),
-            React.createElement(Sex, null)
-        );
+                _react2.default.createElement(Configuration, { birthdayDate: this.state.birthdayDate, update: this.update }),
+                _react2.default.createElement(Query, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, update: this.update }),
+                _react2.default.createElement(Result, { queryDate: this.state.queryDate, birthdayDate: this.state.birthdayDate, resultTerm: this.state.resultTerm })
+            );
+        }
+    }]);
+
+    return App;
+}(_react2.default.Component);
+
+var Configuration = function (_React$Component2) {
+    _inherits(Configuration, _React$Component2);
+
+    function Configuration() {
+        _classCallCheck(this, Configuration);
+
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(Configuration).apply(this, arguments));
     }
-});
-var Birthday = React.createClass({
+
+    _createClass(Configuration, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    '初期設定'
+                ),
+                _react2.default.createElement(Birthday, { birthdayDate: this.props.birthdayDate, update: this.props.update }),
+                _react2.default.createElement(Sex, null)
+            );
+        }
+    }]);
+
+    return Configuration;
+}(_react2.default.Component);
+
+var Birthday = _react2.default.createClass({
     displayName: 'Birthday',
 
     _onChange: function _onChange() {
-        var year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
-        var month = ReactDOM.findDOMNode(this.refs.month).value.trim() - 0;
-        var date = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        var year = _reactDom2.default.findDOMNode(this.refs.year).value.trim() - 0;
+        var month = _reactDom2.default.findDOMNode(this.refs.month).value.trim() - 0;
+        var date = _reactDom2.default.findDOMNode(this.refs.date).value.trim() - 0;
         this.props.update({
             birthdayDate: new Date(year, month - 1, date)
         });
@@ -19161,28 +19213,28 @@ var Birthday = React.createClass({
     render: function render() {
         var birthdayDate = this.props.birthdayDate;
         var _onChange = this.props.onChange;
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 '生年月日'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getFullYear(), onChange: this._onChange, ref: 'year' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: birthdayDate.getFullYear(), onChange: this._onChange, ref: 'year' }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: 'month' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: birthdayDate.getMonth() + 1, onChange: this._onChange, ref: 'month' }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '月'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: birthdayDate.getDate(), onChange: this._onChange, ref: 'date' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: birthdayDate.getDate(), onChange: this._onChange, ref: 'date' }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '日'
@@ -19190,27 +19242,27 @@ var Birthday = React.createClass({
         );
     }
 });
-var Sex = React.createClass({
+var Sex = _react2.default.createClass({
     displayName: 'Sex',
 
     render: function render() {
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 '性別'
             ),
-            React.createElement('input', { type: 'radio', name: 'sex', checked: 'checked', readonly: 'readonly' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'sex', checked: 'checked', readonly: 'readonly' }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '男性'
             ),
-            React.createElement('br', null),
-            React.createElement('input', { type: 'radio', name: 'sex', readonly: 'readonly' }),
-            React.createElement(
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('input', { type: 'radio', name: 'sex', readonly: 'readonly' }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '女性'
@@ -19218,58 +19270,58 @@ var Sex = React.createClass({
         );
     }
 });
-var Query = React.createClass({
+var Query = _react2.default.createClass({
     displayName: 'Query',
 
     render: function render() {
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h1',
                 null,
                 '入力'
             ),
-            React.createElement(QueryDate, { queryDate: this.props.queryDate, update: this.props.update }),
-            React.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate, update: this.props.update })
+            _react2.default.createElement(QueryDate, { queryDate: this.props.queryDate, update: this.props.update }),
+            _react2.default.createElement(QueryAge, { queryDate: this.props.queryDate, birthdayDate: this.props.birthdayDate, update: this.props.update })
         );
     }
 });
-var QueryDate = React.createClass({
+var QueryDate = _react2.default.createClass({
     displayName: 'QueryDate',
 
     _onChange: function _onChange() {
-        var year = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
-        var month = ReactDOM.findDOMNode(this.refs.month).value.trim() - 0;
-        var date = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        var year = _reactDom2.default.findDOMNode(this.refs.year).value.trim() - 0;
+        var month = _reactDom2.default.findDOMNode(this.refs.month).value.trim() - 0;
+        var date = _reactDom2.default.findDOMNode(this.refs.date).value.trim() - 0;
         this.props.update({
             queryDate: new Date(year, month - 1, date)
         });
     },
     render: function render() {
         var queryDate = this.props.queryDate;
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 'この日まで生きていた場合'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: queryDate.getFullYear(), ref: 'year', onChange: this._onChange }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: queryDate.getFullYear(), ref: 'year', onChange: this._onChange }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: queryDate.getMonth() + 1, ref: 'month', onChange: this._onChange }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: queryDate.getMonth() + 1, ref: 'month', onChange: this._onChange }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '月'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: queryDate.getDate(), ref: 'date', onChange: this._onChange }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: queryDate.getDate(), ref: 'date', onChange: this._onChange }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '日'
@@ -19277,12 +19329,12 @@ var QueryDate = React.createClass({
         );
     }
 });
-var QueryAge = React.createClass({
+var QueryAge = _react2.default.createClass({
     displayName: 'QueryAge',
 
     _onChange: function _onChange() {
-        var ageY = ReactDOM.findDOMNode(this.refs.year).value.trim() - 0;
-        var ageD = ReactDOM.findDOMNode(this.refs.date).value.trim() - 0;
+        var ageY = _reactDom2.default.findDOMNode(this.refs.year).value.trim() - 0;
+        var ageD = _reactDom2.default.findDOMNode(this.refs.date).value.trim() - 0;
         var birthdayDate = this.props.birthdayDate;
         var birthdayY = birthdayDate.getFullYear();
         var birthdayM = birthdayDate.getMonth() + 1;
@@ -19308,22 +19360,22 @@ var QueryAge = React.createClass({
         var isAfterBirthday = queryDate >= queryYearBirthdayDate;
         var ageY = queryY - birthdayY - (isAfterBirthday ? 0 : 1);
         var ageD = (isAfterBirthday ? queryDate - queryYearBirthdayDate : queryDate - lastYearBirthdayDate) / (24 * 60 * 60 * 1000);
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 'この年齢まで生きていた場合'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: ageY, ref: 'year', onChange: this._onChange }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: ageY, ref: 'year', onChange: this._onChange }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '歳'
             ),
-            React.createElement('input', { type: 'number', step: '1', value: ageD, ref: 'date', onChange: this._onChange }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', step: '1', value: ageD, ref: 'date', onChange: this._onChange }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '日'
@@ -19331,54 +19383,54 @@ var QueryAge = React.createClass({
         );
     }
 });
-var Result = React.createClass({
+var Result = _react2.default.createClass({
     displayName: 'Result',
 
     render: function render() {
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h1',
                 null,
                 '平均余命'
             ),
-            React.createElement(ResultDate, { queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
-            React.createElement(ResultPeriod, { resultTerm: this.props.resultTerm }),
-            React.createElement(ResultLifetimePeriod, { birthdayDate: this.props.birthdayDate, queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
-            React.createElement(ResultPercentage, { birthdayDate: this.props.birthdayDate, queryDate: this.props.queryDate, resultTerm: this.props.resultTerm })
+            _react2.default.createElement(ResultDate, { queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
+            _react2.default.createElement(ResultPeriod, { resultTerm: this.props.resultTerm }),
+            _react2.default.createElement(ResultLifetimePeriod, { birthdayDate: this.props.birthdayDate, queryDate: this.props.queryDate, resultTerm: this.props.resultTerm }),
+            _react2.default.createElement(ResultPercentage, { birthdayDate: this.props.birthdayDate, queryDate: this.props.queryDate, resultTerm: this.props.resultTerm })
         );
     }
 });
-var ResultDate = React.createClass({
+var ResultDate = _react2.default.createClass({
     displayName: 'ResultDate',
 
     render: function render() {
         var queryDate = this.props.queryDate;
         var resultTerm = this.props.resultTerm;
         var deathDate = new Date(queryDate.getTime() + resultTerm);
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 '亡くなる日'
             ),
-            React.createElement('input', { type: 'text', value: deathDate.getFullYear(), readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'text', value: deathDate.getFullYear(), readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'text', value: deathDate.getMonth() + 1, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'text', value: deathDate.getMonth() + 1, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '月'
             ),
-            React.createElement('input', { type: 'text', value: deathDate.getDate(), readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'text', value: deathDate.getDate(), readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '日'
@@ -19386,29 +19438,29 @@ var ResultDate = React.createClass({
         );
     }
 });
-var ResultPeriod = React.createClass({
+var ResultPeriod = _react2.default.createClass({
     displayName: 'ResultPeriod',
 
     render: function render() {
         var resultTerm = this.props.resultTerm;
-        var year = Math.floor(resultTerm / util.YEAR);
-        var date = Math.floor(resultTerm % util.YEAR / util.DAY);
-        return React.createElement(
+        var year = Math.floor(resultTerm / _util2.default.YEAR);
+        var date = Math.floor(resultTerm % _util2.default.YEAR / _util2.default.DAY);
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 '残りの人生の期間'
             ),
-            React.createElement('input', { type: 'number', value: year, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', value: year, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'number', value: date, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', value: date, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '日'
@@ -19416,31 +19468,31 @@ var ResultPeriod = React.createClass({
         );
     }
 });
-var ResultLifetimePeriod = React.createClass({
+var ResultLifetimePeriod = _react2.default.createClass({
     displayName: 'ResultLifetimePeriod',
 
     render: function render() {
         var birthdayDate = this.props.birthdayDate;
         var queryDate = this.props.queryDate;
         var lifetime = queryDate - birthdayDate + this.props.resultTerm;
-        var year = Math.floor(lifetime / util.YEAR);
-        var date = Math.floor(lifetime % util.YEAR / util.DAY);
-        return React.createElement(
+        var year = Math.floor(lifetime / _util2.default.YEAR);
+        var date = Math.floor(lifetime % _util2.default.YEAR / _util2.default.DAY);
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 '寿命'
             ),
-            React.createElement('input', { type: 'number', value: year, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', value: year, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '年'
             ),
-            React.createElement('input', { type: 'number', value: date, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'number', value: date, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '日'
@@ -19448,7 +19500,7 @@ var ResultLifetimePeriod = React.createClass({
         );
     }
 });
-var ResultPercentage = React.createClass({
+var ResultPercentage = _react2.default.createClass({
     displayName: 'ResultPercentage',
 
     render: function render() {
@@ -19457,28 +19509,28 @@ var ResultPercentage = React.createClass({
         var resultTerm = this.props.resultTerm;
         var ageTerm = queryDate - birthdayDate;
         var restPercent = Math.round(resultTerm / (ageTerm + resultTerm) * 100000) / 1000;
-        return React.createElement(
+        return _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
                 'h2',
                 null,
                 '生きた割合'
             ),
-            React.createElement('input', { type: 'text', value: 100 - restPercent, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'text', value: 100 - restPercent, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '%'
             ),
-            React.createElement('br', null),
-            React.createElement(
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
                 'h2',
                 null,
                 '残りの割合'
             ),
-            React.createElement('input', { type: 'text', value: restPercent, readonly: true }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'text', value: restPercent, readonly: true }),
+            _react2.default.createElement(
                 'label',
                 null,
                 '%'
@@ -19486,18 +19538,18 @@ var ResultPercentage = React.createClass({
         );
     }
 });
-ReactDOM.render(React.createElement(App, null), document.getElementById('content'));
+_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('content'));
 
 },{"./lifeExpectancy.es6":160,"./lifeExpectancyTable.es6":161,"./util.es6":162,"react":158,"react-dom":29}],160:[function(require,module,exports){
 'use strict';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var util = require('./util.es6');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-var ORDER = 2;
-
-module.exports = function (x, table) {
+exports.default = function (x, table) {
     var tableX = table.map(function (array) {
         return array[0];
     });
@@ -19545,6 +19597,16 @@ module.exports = function (x, table) {
     }
     return y;
 };
+
+var _util = require('./util.es6');
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ORDER = 2;
+
+;
 
 function getApproximateEquation(samples, order) {
     var n = samples.length;
@@ -19619,33 +19681,44 @@ function getApproximateEquation(samples, order) {
 },{"./util.es6":162}],161:[function(require,module,exports){
 'use strict';
 
-var util = require('./util.es6');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _util = require('./util.es6');
+
+var _util2 = _interopRequireDefault(_util);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var rawWeek = [[0, 80.79], [1, 80.83], [2, 80.82], [3, 80.80], [4, 80.79]];
 var rawMonth = [[2, 80.72], [3, 80.64], [6, 80.42]];
 var rawYear = [[1, 79.95], [2, 78.98], [3, 78.00], [4, 77.01], [5, 76.02], [6, 75.02], [7, 74.03], [8, 73.04], [9, 72.04], [10, 71.05], [11, 70.06], [12, 69.06], [13, 68.07], [14, 67.07], [15, 66.08], [16, 65.09], [17, 64.11], [18, 63.12], [19, 62.15], [20, 61.17], [21, 60.20], [22, 59.22], [23, 58.25], [24, 57.28], [25, 56.31], [26, 55.34], [27, 54.37], [28, 53.40], [29, 52.43], [30, 51.46], [31, 50.49], [32, 49.52], [33, 48.55], [34, 47.58], [35, 46.62], [36, 45.65], [37, 44.69], [38, 43.72], [39, 42.76], [40, 41.80], [41, 40.84], [42, 39.89], [43, 38.94], [44, 37.99], [45, 37.05], [46, 36.11], [47, 35.17], [48, 34.24], [49, 33.31], [50, 32.39], [51, 31.48], [52, 30.57], [53, 29.67], [54, 28.77], [55, 27.89], [56, 27.00], [57, 26.13], [58, 25.27], [59, 24.41], [60, 23.55], [61, 22.71], [62, 21.88], [63, 21.06], [64, 20.25], [65, 19.46], [66, 18.67], [67, 17.90], [68, 17.14], [69, 16.38], [70, 15.64], [71, 14.91], [72, 14.19], [73, 13.49], [74, 12.79], [75, 12.09], [76, 11.42], [77, 10.75], [78, 10.11], [79, 9.49], [80, 8.89], [81, 8.32], [82, 7.78], [83, 7.26], [84, 6.77], [85, 6.31], [86, 5.87], [87, 5.47], [88, 5.08], [89, 4.72], [90, 4.38], [91, 4.08], [92, 3.80], [93, 3.55], [94, 3.31], [95, 3.09], [96, 2.89], [97, 2.71], [98, 2.53], [99, 2.37], [100, 2.23], [101, 2.09], [102, 1.96], [103, 1.84], [104, 1.73], [105, 1.63]];
 
 var tableWeek = rawWeek.map(function (array) {
-    return [array[0] * util.WEEK, Math.round(array[1] * util.YEAR)];
+    return [array[0] * _util2.default.WEEK, Math.round(array[1] * _util2.default.YEAR)];
 });
 var tableMonth = rawMonth.map(function (array) {
-    return [Math.round(array[0] * util.MONTH), Math.round(array[1] * util.YEAR)];
+    return [Math.round(array[0] * _util2.default.MONTH), Math.round(array[1] * _util2.default.YEAR)];
 });
 var tableYear = rawYear.map(function (array) {
-    return [Math.round(array[0] * util.YEAR), Math.round(array[1] * util.YEAR)];
+    return [Math.round(array[0] * _util2.default.YEAR), Math.round(array[1] * _util2.default.YEAR)];
 });
 
-module.exports = tableWeek.concat(tableMonth, tableYear);
+exports.default = tableWeek.concat(tableMonth, tableYear);
 
 },{"./util.es6":162}],162:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var DAY = 24 * 60 * 60 * 1000; // integer
 var WEEK = DAY * 7; // integer
 var YEAR = 365.2425 * DAY; // integer
 var MONTH = YEAR / 12; // integer
 
-module.exports = { DAY: DAY, WEEK: WEEK, YEAR: YEAR, MONTH: MONTH };
+exports.default = { DAY: DAY, WEEK: WEEK, YEAR: YEAR, MONTH: MONTH };
 
 },{}]},{},[159])
 //# sourceMappingURL=bundle.js.map

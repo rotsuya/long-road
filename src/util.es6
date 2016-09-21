@@ -3,4 +3,4 @@ const WEEK = DAY * 7;             // integer
 const YEAR = 365.2425 * DAY;      // integer
 const MONTH = YEAR / 12;          // integer
 
-module.exports = {DAY, WEEK, YEAR, MONTH};
+export default {DAY, WEEK, YEAR, MONTH};

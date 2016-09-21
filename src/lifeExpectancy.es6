@@ -1,10 +1,10 @@
 'use strict';
 
-const util = require('./util.es6');
+import util from './util.es6';
 
 const ORDER = 2;
 
-module.exports = function(x, table) {
+export default function(x, table) {
     const tableX = table.map((array) => {
         return array[0];
     });

@@ -1,6 +1,6 @@
 'use strict';
 
-const util = require('./util.es6');
+import util from './util.es6';
 
 const rawWeek = [
     [0, 80.79],
@@ -132,4 +132,4 @@ const tableYear = rawYear.map((array) => {
     return [Math.round(array[0] * util.YEAR), Math.round(array[1] * util.YEAR)];
 });
 
-module.exports = tableWeek.concat(tableMonth, tableYear);
+export default tableWeek.concat(tableMonth, tableYear);
